@@ -1,7 +1,8 @@
 "use client";
 
-import { DecisionType } from "@/domain/contract";
+import { type Decision, DecisionType } from "@/domain/contract";
 import type { PendingApproval } from "@/domain/pending-approval";
+import { useToast } from "@/features/notifications/toast";
 
 import { useApprovals } from "../use-approvals";
 import { ApprovalsView } from "./approvals-view";
@@ -17,26 +18,27 @@ export function ApprovalsBoard({
 }) {
   const { approvals, status, busyRunId, decide } =
     useApprovals(initialApprovals);
+  const { notify } = useToast();
+
+  const run = (approval: PendingApproval, decision: Decision): void => {
+    void decide(approval, decision).then((ok) => {
+      if (!ok) {
+        notify("Could not submit the decision. It was restored.", "error");
+      }
+    });
+  };
 
   const onApprove = (approval: PendingApproval): void => {
-    void decide(approval, { type: DecisionType.Approve, approver: APPROVER });
+    run(approval, { type: DecisionType.Approve, approver: APPROVER });
   };
   const onApproveWithEdits = (
     approval: PendingApproval,
     editedArgs: Record<string, unknown>,
   ): void => {
-    void decide(approval, {
-      type: DecisionType.Edit,
-      approver: APPROVER,
-      editedArgs,
-    });
+    run(approval, { type: DecisionType.Edit, approver: APPROVER, editedArgs });
   };
   const onReject = (approval: PendingApproval, reason: string): void => {
-    void decide(approval, {
-      type: DecisionType.Reject,
-      approver: APPROVER,
-      reason,
-    });
+    run(approval, { type: DecisionType.Reject, approver: APPROVER, reason });
   };
 
   return (

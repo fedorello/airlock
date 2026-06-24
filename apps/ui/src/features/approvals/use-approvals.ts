@@ -14,7 +14,7 @@ export interface ApprovalsState {
   approvals: PendingApproval[];
   status: ApprovalsStatus;
   busyRunId: string | null;
-  decide: (approval: PendingApproval, decision: Decision) => Promise<void>;
+  decide: (approval: PendingApproval, decision: Decision) => Promise<boolean>;
 }
 
 /** Starts from the server-rendered queue and keeps it live over SSE. The effect
@@ -61,15 +61,17 @@ export function useApprovals(
   }, [handleEvent]);
 
   const decide = useCallback(
-    async (approval: PendingApproval, decision: Decision) => {
+    async (approval: PendingApproval, decision: Decision): Promise<boolean> => {
       setBusyRunId(approval.runId);
       setApprovals((current) =>
         current.filter((item) => item.runId !== approval.runId),
       );
       try {
         await submitDecision(approval.runId, approval.requestId, decision);
+        return true;
       } catch {
         await load();
+        return false;
       } finally {
         setBusyRunId(null);
       }

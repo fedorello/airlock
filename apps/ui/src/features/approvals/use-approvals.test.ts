@@ -118,4 +118,28 @@ describe("useApprovals", () => {
       expect.objectContaining({ method: "POST" }),
     );
   });
+
+  it("reports failure and restores the queue when a decision fails", async () => {
+    vi.stubGlobal("EventSource", FakeEventSource);
+    const fetchMock = vi.fn((input: RequestInfo | URL) =>
+      String(input).includes("/decision")
+        ? Promise.resolve({ ok: false, status: 500 } as Response)
+        : Promise.resolve(jsonResponse({ approvals: [PENDING] })),
+    );
+    vi.stubGlobal("fetch", fetchMock);
+
+    const { result } = renderHook(() => useApprovals([PENDING]));
+    let ok = true;
+    await act(async () => {
+      ok = await result.current.decide(result.current.approvals[0], {
+        type: "approve",
+        approver: "me",
+      });
+    });
+
+    expect(ok).toBe(false);
+    await waitFor(() => {
+      expect(result.current.approvals).toHaveLength(1);
+    });
+  });
 });

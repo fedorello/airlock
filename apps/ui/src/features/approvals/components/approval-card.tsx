@@ -59,7 +59,7 @@ export function ApprovalCard({
   };
 
   return (
-    <Card className="flex flex-col gap-3">
+    <Card className="animate-in flex flex-col gap-3">
       <div className="flex items-center justify-between gap-2">
         <code className="font-mono text-sm font-semibold">
           {approval.toolName}
