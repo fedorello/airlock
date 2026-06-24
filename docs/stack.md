@@ -1,0 +1,110 @@
+# Technology stack and pinned versions
+
+The exact stack Airlock is built on. Versions here are **current stable** as
+verified on **2026-06-24** against the npm registry, PyPI, and the official
+release channels for the runtimes. Treat this file as the source of truth; the
+package manifests and lockfiles must agree with it.
+
+## Versioning policy
+
+- **Recent but stable.** We pin to the latest stable release of each dependency,
+  never a pre-release, alpha, beta, or release candidate.
+- **Runtimes track LTS.** Node.js uses the Active LTS line; Python uses the
+  latest stable; Redis uses the latest stable server.
+- **Exact reproducibility.** Manifests use caret ranges anchored to the versions
+  below; the lockfiles (`pnpm-lock.yaml`, `uv.lock`) pin exact versions so every
+  install is reproducible.
+- **One source of truth.** When a version changes, update this file in the same
+  commit as the manifest change.
+
+---
+
+## Runtimes
+
+| Runtime | Pinned | Notes |
+| --- | --- | --- |
+| **Node.js** | **24 LTS** (24.18.0) | Active LTS through Oct 2026, then Maintenance LTS to Apr 2028. `engines` requires `>=24`. |
+| **Python** | **3.14** (3.14.6) | Latest stable. Minimum supported: `>=3.13`. |
+| **Redis** | **8.8** (server, 8.8.0) | Used for the event bus (Pub/Sub) and the run store. |
+
+---
+
+## TypeScript package (`packages/ts`)
+
+Package manager: **pnpm 11.9.0**.
+
+| Dependency | Version | Purpose |
+| --- | --- | --- |
+| `typescript` | 6.0.3 | Language / compiler. |
+| `tsup` | 8.5.1 | Build (bundle to ESM + types). |
+| `vitest` | 4.1.9 | Test runner. |
+| `@vitest/coverage-v8` | 4.1.9 | Coverage. |
+| `zod` | 4.4.3 | Schemas and runtime validation for tool inputs and events. |
+| `ioredis` | 5.11.1 | Redis client — Pub/Sub event-bus adapter and Redis run-store adapter. |
+| `@anthropic-ai/sdk` | 0.105.0 | Anthropic `LlmProvider` adapter. |
+| `openai` | 6.44.0 | OpenAI `LlmProvider` adapter; also OpenRouter and Ollama via `baseURL`. |
+| `eslint` | 10.5.0 | Linting. |
+| `typescript-eslint` | 8.62.0 | TypeScript lint rules / parser. |
+| `prettier` | 3.8.4 | Formatting. |
+| `@types/node` | 24.13.2 | Node typings — pinned to the Node 24 LTS major. |
+
+---
+
+## Python package (`packages/py`)
+
+Package / environment manager: **uv 0.11.24**. Build backend: **hatchling 1.30.1**.
+
+| Dependency | Version | Purpose |
+| --- | --- | --- |
+| `pydantic` | 2.13.4 | Schemas and validation for tool inputs, events, and run state. |
+| `redis` | 8.0.1 | redis-py (async) — Pub/Sub event-bus adapter and Redis run-store adapter. |
+| `anthropic` | 0.111.0 | Anthropic `LlmProvider` adapter. |
+| `openai` | 2.43.0 | OpenAI `LlmProvider` adapter; also OpenRouter and Ollama via `base_url`. |
+| `httpx` | 0.28.1 | HTTP client where a raw call is needed outside an SDK. |
+| `pytest` | 9.1.1 | Test runner. |
+| `pytest-asyncio` | 1.4.0 | Async test support. |
+| `pytest-cov` | 7.1.0 | Coverage. |
+| `ruff` | 0.15.19 | Linting and formatting. |
+| `mypy` | 2.1.0 | Static type checking. |
+
+---
+
+## Container images
+
+Used by Docker Compose (see the deployment topology in
+[`architecture/overview.md`](./architecture/overview.md)).
+
+| Image | Tag | Use |
+| --- | --- | --- |
+| `node` | `24-alpine` | TypeScript runner / approver services. |
+| `python` | `3.14-slim` | Python runner / approver services. |
+| `redis` | `8.8-alpine` | Event bus (Pub/Sub) and run store. |
+
+Compose uses the Compose Specification (Docker Compose v2, shipped with Docker
+Engine).
+
+---
+
+## How the stack maps to the architecture
+
+Every dependency exists to back a specific port or adapter — nothing is in the
+core. See [`architecture/overview.md`](./architecture/overview.md).
+
+- **`EventBus` port** → `ioredis` (TS) / `redis` (Python) Pub/Sub adapter; an
+  in-memory adapter has no dependencies.
+- **`RunStore` port** → the same Redis client for the Redis adapter; in-memory
+  adapter has none.
+- **`LlmProvider` port** → `@anthropic-ai/sdk` / `anthropic` and `openai`
+  adapters; the `Fake` adapter used in tests has no dependencies.
+- **Domain schemas / validation** → `zod` (TS) / `pydantic` (Python).
+- **Tests** → `vitest` / `pytest`, run entirely against the `Fake` provider and
+  the in-memory bus and store — no network, no Redis, no API keys.
+
+---
+
+## Maintenance
+
+Re-verify these versions before any dependency bump, and bump deliberately (not
+automatically). The verification used the npm registry (`npm view <pkg>
+version`), PyPI (`pypi.org/pypi/<pkg>/json`), and the official Node.js, Python,
+and Redis release pages, on 2026-06-24.
