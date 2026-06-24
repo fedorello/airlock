@@ -61,6 +61,9 @@ for the layout). Keep this index in sync — when you add a document, add it her
   architecture: the hexagon, domain model, ports & adapters, the agent loop, run
   lifecycle, the Redis Pub/Sub event flow, security model, package structure, and
   deployment topology.
+- [`docs/design/contracts.md`](./docs/design/contracts.md) — the precise,
+  language-neutral contract both packages implement (signatures, state machine,
+  invariants, errors).
 - **ADRs** (`docs/adr/`):
   - [`0001-architecture-foundations.md`](./docs/adr/0001-architecture-foundations.md)
     — hexagonal architecture, Redis Pub/Sub event-driven, model-agnostic
