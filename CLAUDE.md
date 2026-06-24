@@ -63,3 +63,13 @@ for the layout). Keep this index in sync — when you add a document, add it her
   - [`0001-architecture-foundations.md`](./docs/adr/0001-architecture-foundations.md)
     — hexagonal architecture, Redis Pub/Sub event-driven, model-agnostic
     providers, dual-language parity, deterministic tests.
+  - [`0002-approval-events-over-redis-pubsub.md`](./docs/adr/0002-approval-events-over-redis-pubsub.md)
+    — Redis Pub/Sub as the approval-event transport and its semantics.
+  - [`0003-two-tier-risk-model-with-gate-policy.md`](./docs/adr/0003-two-tier-risk-model-with-gate-policy.md)
+    — `safe`/`sensitive` tiers plus an injectable `GatePolicy`.
+  - [`0004-resumable-runs-via-runstate-and-runstore.md`](./docs/adr/0004-resumable-runs-via-runstate-and-runstore.md)
+    — serializable `RunState` + `RunStore` for pause/resume.
+  - [`0005-model-agnostic-provider-port.md`](./docs/adr/0005-model-agnostic-provider-port.md)
+    — one normalized `LlmProvider` port, one adapter per vendor.
+  - [`0006-dual-language-parity-monorepo.md`](./docs/adr/0006-dual-language-parity-monorepo.md)
+    — TypeScript + Python parity in a single monorepo.
