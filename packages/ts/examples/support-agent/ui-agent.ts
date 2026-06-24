@@ -15,7 +15,12 @@ import {
   SystemClock,
   UuidIdGenerator,
 } from "../../src/index";
-import { SUPPORT_REQUEST, SUPPORT_SCRIPT, SUPPORT_SYSTEM_PROMPT, createSupportTools } from "./wiring";
+import {
+  SUPPORT_REQUEST,
+  SUPPORT_SCRIPT,
+  SUPPORT_SYSTEM_PROMPT,
+  createSupportTools,
+} from "./wiring";
 
 // The agent behind the approver dashboard: it starts a support run that pauses at
 // the gate and waits for a human to approve through the UI (no auto-approver). It
