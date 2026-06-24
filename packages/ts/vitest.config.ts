@@ -17,6 +17,7 @@ export default defineConfig({
         "src/domain/**",
         "src/infrastructure/events/redis-event-bus.ts",
         "src/infrastructure/store/redis-run-store.ts",
+        "src/interface/approver/cli-decision-source.ts",
       ],
       thresholds: {
         lines: 90,

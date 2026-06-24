@@ -36,8 +36,8 @@ the [ADRs](../adr/), and the [pinned stack](../stack.md), and it holds itself to
 | 0 | Foundations & documentation | ✅ Done |
 | 1 | TypeScript core — agent loop, fakes, tests | ✅ Done |
 | 2 | TypeScript infrastructure — Redis, providers, config | ✅ Done |
-| 3 | TypeScript interface — runner, approver, Compose, Makefile, example | ⬜ Next |
-| 4 | Python parity — core → infrastructure → interface | ⬜ |
+| 3 | TypeScript interface — runner, approver, Compose, Makefile, example | ✅ Done |
+| 4 | Python parity — core → infrastructure → interface | ⬜ Next |
 | 5 | CI/CD, enforcement, and agent evals | ⬜ |
 | 6 | Polish & release readiness | ⬜ |
 
@@ -147,24 +147,24 @@ Makefile entry point.
 
 Deliverables:
 
-- [ ] `interface/runner.ts` — the Agent Runner driving adapter: subscribes to
+- [x] `interface/runner.ts` — the Agent Runner driving adapter: subscribes to
       `approval.decided` (EventSubscriber), validates the payload with zod, and calls
       `Agent.resume`.
-- [ ] `interface/approver/cli.ts` — a CLI approver: subscribes to
+- [x] `interface/approver/cli.ts` — a CLI approver: subscribes to
       `approval.requested`, shows the proposed action, and publishes
       `approval.decided` (approve / edit / reject).
-- [ ] `examples/support-agent/` — the hero example: a customer-service agent with
+- [x] `examples/support-agent/` — the hero example: a customer-service agent with
       tools `search_knowledge_base` and `lookup_order` (safe) and `send_email` and
       `issue_refund` (sensitive). It drafts autonomously and gates send/refund.
       Runs deterministically with the fake provider and optionally a real one.
-- [ ] `deploy/docker/` — `Dockerfile` and a `docker-compose.yml` with `redis`
+- [x] `deploy/docker/` — `Dockerfile` and a `docker-compose.yml` with `redis`
       (8.8-alpine), `agent-runner`, and `approver` services.
-- [ ] Root `Makefile` — `help`, `up`, `down`, `test`, `lint`, `fmt`, `check`,
+- [x] Root `Makefile` — `help`, `up`, `down`, `test`, `lint`, `fmt`, `check`,
       wired to the TypeScript package and Compose.
 
 Tests:
 
-- [ ] An end-to-end test of the full pause/approve/resume flow over the in-memory
+- [x] An end-to-end test of the full pause/approve/resume flow over the in-memory
       bus (deterministic), plus a Compose smoke check.
 
 Done when: `make up` runs the example; a sensitive action visibly pauses for the

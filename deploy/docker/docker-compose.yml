@@ -1,0 +1,21 @@
+# Airlock demo stack: Redis plus the support-agent demo, which runs the full
+# pause/approve/resume flow over Redis Pub/Sub (the same decoupled shape as
+# production). `docker compose up` runs the demo and exits with its status.
+services:
+  redis:
+    image: redis:8.8-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 3s
+      retries: 10
+
+  demo:
+    build:
+      context: ../..
+      dockerfile: deploy/docker/Dockerfile
+    environment:
+      AIRLOCK_REDIS_URL: "redis://redis:6379"
+    depends_on:
+      redis:
+        condition: service_healthy
