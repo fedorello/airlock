@@ -9,6 +9,7 @@ from airlock.application.ports.gate_policy import GateDecisionInput, GatePolicy
 from airlock.application.ports.id_generator import IdGenerator
 from airlock.application.ports.llm_provider import CompletionRequest, CompletionResult, LlmProvider
 from airlock.application.ports.run_store import RunStore
+from airlock.core.settings import ProviderName, Settings
 from airlock.domain.approval import (
     ApprovalDecision,
     ApprovalRequest,
@@ -31,16 +32,28 @@ from airlock.domain.identifiers import RequestId, RunId, ToolCallId
 from airlock.domain.run import RunState, RunStatus
 from airlock.domain.tool import RiskTier, Tool, ToolCall, ToolDefinition, ToolHandler
 from airlock.infrastructure.audit.in_memory import InMemoryAuditSink
+from airlock.infrastructure.audit.line import LineAuditSink, file_audit_sink, stdout_audit_sink
 from airlock.infrastructure.clock import FixedClock, SystemClock
 from airlock.infrastructure.events.in_memory import InMemoryEventBus
+from airlock.infrastructure.events.redis_event_bus import RedisEventBus
 from airlock.infrastructure.ids import SequentialIdGenerator, UuidIdGenerator
+from airlock.infrastructure.providers.anthropic import AnthropicOptions, AnthropicProvider
 from airlock.infrastructure.providers.fake import FakeLlmProvider, ScriptExhaustedError
+from airlock.infrastructure.providers.http import (
+    ProviderHttpError,
+    ProviderResponseError,
+    post_json,
+)
+from airlock.infrastructure.providers.openai import OpenAiOptions, OpenAiProvider
 from airlock.infrastructure.store.in_memory import InMemoryRunStore
+from airlock.infrastructure.store.redis_run_store import RedisRunStore
 
 __all__ = [
     "Agent",
     "AgentDependencies",
     "AirlockError",
+    "AnthropicOptions",
+    "AnthropicProvider",
     "ApprovalDecidedEvent",
     "ApprovalDecision",
     "ApprovalRequest",
@@ -66,9 +79,17 @@ __all__ = [
     "InMemoryAuditSink",
     "InMemoryEventBus",
     "InMemoryRunStore",
+    "LineAuditSink",
     "LlmProvider",
     "Message",
     "MessageRole",
+    "OpenAiOptions",
+    "OpenAiProvider",
+    "ProviderHttpError",
+    "ProviderName",
+    "ProviderResponseError",
+    "RedisEventBus",
+    "RedisRunStore",
     "RejectDecision",
     "RequestId",
     "RiskBasedGatePolicy",
@@ -81,6 +102,7 @@ __all__ = [
     "RunStore",
     "ScriptExhaustedError",
     "SequentialIdGenerator",
+    "Settings",
     "SystemClock",
     "Tool",
     "ToolCall",
@@ -91,4 +113,7 @@ __all__ = [
     "UnknownToolError",
     "UserMessage",
     "UuidIdGenerator",
+    "file_audit_sink",
+    "post_json",
+    "stdout_audit_sink",
 ]

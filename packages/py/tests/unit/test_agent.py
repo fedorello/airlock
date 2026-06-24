@@ -1,14 +1,6 @@
 """Behavior tests for the Agent — the contract invariants."""
 
 import pytest
-from tests.unit.harness import (
-    FIXED_AT,
-    ToolSpec,
-    build_harness,
-    completion,
-    require_approval,
-    tool_call,
-)
 
 from airlock import (
     ApproveDecision,
@@ -23,6 +15,14 @@ from airlock import (
     RunStatus,
     ToolMessage,
     UnknownToolError,
+)
+from tests.unit.harness import (
+    FIXED_AT,
+    ToolSpec,
+    build_harness,
+    completion,
+    require_approval,
+    tool_call,
 )
 
 SUPPORT_TOOLS = [
