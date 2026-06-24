@@ -39,6 +39,13 @@ understanding of agent safety and the ability to write high-quality code with an
    Use the imperative mood, keep the subject short, and add a body for the _why_
    when it isn't obvious. Breaking changes use `!` and a `BREAKING CHANGE:`
    footer. One logical change per commit.
+10. **Tooling & deployment.** Local development and deployment run through
+    **Docker Compose** (the app services plus Redis for the event bus). A
+    well-structured **Makefile** is the single entry point for common tasks —
+    `make help` lists everything, with targets such as `make up`, `make down`,
+    `make test`, `make lint`, `make fmt`, and `make check` (the full local gate).
+    Keep targets discoverable, self-documenting, and consistent across the
+    TypeScript and Python packages.
 
 ## Documentation index
 
