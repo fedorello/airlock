@@ -32,3 +32,23 @@ understanding of agent safety and the ability to write high-quality code with an
    same design and naming so the repo reads as one coherent project.
 8. **Tests are not optional.** Core logic is covered by fast, deterministic tests
    (use a fake provider — no live API calls in tests).
+9. **Conventional Commits, strictly.** Every commit message follows
+   [Conventional Commits](https://www.conventionalcommits.org):
+   `<type>(<optional scope>): <description>`. Allowed types: `feat`, `fix`,
+   `docs`, `refactor`, `test`, `chore`, `build`, `ci`, `perf`, `style`, `revert`.
+   Use the imperative mood, keep the subject short, and add a body for the _why_
+   when it isn't obvious. Breaking changes use `!` and a `BREAKING CHANGE:`
+   footer. One logical change per commit.
+
+## Documentation index
+
+All docs live under [`docs/`](./docs/) (see [`docs/README.md`](./docs/README.md)
+for the layout). Keep this index in sync — when you add a document, add it here.
+
+- [`CODING_PRINCIPLES.md`](./CODING_PRINCIPLES.md) — the engineering standard for
+  this repo (clean code, tests, discipline).
+- [`docs/README.md`](./docs/README.md) — documentation layout and conventions.
+- **ADRs** (`docs/adr/`):
+  - [`0001-architecture-foundations.md`](./docs/adr/0001-architecture-foundations.md)
+    — hexagonal architecture, Redis Pub/Sub event-driven, model-agnostic
+    providers, dual-language parity, deterministic tests.
