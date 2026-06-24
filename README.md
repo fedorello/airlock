@@ -148,6 +148,68 @@ make up       # TypeScript over real Redis (Docker Compose)
 make up-py    # Python over real Redis (Docker Compose)
 ```
 
+## Run it locally
+
+### Requirements
+
+- **Git** and **GNU Make**.
+- For the **TypeScript** package: **Node 24+** and **pnpm 11+**.
+- For the **Python** package: **Python 3.13+** (3.14 recommended) and
+  [**uv**](https://docs.astral.sh/uv/).
+- **Docker** — only for the Redis demos (`make up*`) and the integration tests. The
+  in-memory demos and the unit tests need nothing beyond the language toolchain.
+
+The two packages are independent, so you only need the toolchain for the language
+you want to run.
+
+### Clone and install
+
+```bash
+git clone https://github.com/fedorello/airlock.git
+cd airlock
+make install        # installs both packages' dependencies (pnpm + uv)
+```
+
+Install just one side with `make ts-install` or `make py-install`.
+
+### Run the demo
+
+No API key needed — the demo uses a scripted model, so it is fully deterministic.
+You'll see safe tools run on their own and sensitive tools pause at the gate.
+
+```bash
+make demo      # TypeScript, in-memory (one process)
+make py-demo   # Python, in-memory
+
+make up        # TypeScript over real Redis (Docker Compose)
+make up-py     # Python over real Redis (Docker Compose)
+make down      # stop and remove the Compose stack
+```
+
+### Run the checks
+
+```bash
+make check-all   # both languages: typecheck / lint / format / tests + coverage
+make ts-check    # TypeScript only
+make py-check    # Python only
+```
+
+Integration tests (`make ts-test-integration`, `make py-test-integration`) need a
+Redis reachable at `AIRLOCK_REDIS_URL` (default `redis://localhost:6379`).
+
+### Use a real model (optional)
+
+Wire a provider to a real API with environment variables — no code change:
+
+```bash
+export AIRLOCK_PROVIDER=anthropic   # or: openai
+export AIRLOCK_MODEL=claude-...      # any model your provider serves
+export AIRLOCK_API_KEY=...
+export AIRLOCK_BASE_URL=...           # optional: an OpenRouter / Ollama endpoint
+```
+
+Run `make help` for the full list of targets.
+
 ## How it's different
 
 The "AI agent governance / firewall" space is crowded, but almost everything in
