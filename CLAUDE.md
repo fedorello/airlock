@@ -55,6 +55,10 @@ for the layout). Keep this index in sync — when you add a document, add it her
 - [`CODING_PRINCIPLES.md`](./CODING_PRINCIPLES.md) — the engineering standard for
   this repo (clean code, tests, discipline).
 - [`docs/README.md`](./docs/README.md) — documentation layout and conventions.
+- [`docs/architecture/overview.md`](./docs/architecture/overview.md) — the full
+  architecture: the hexagon, domain model, ports & adapters, the agent loop, run
+  lifecycle, the Redis Pub/Sub event flow, security model, package structure, and
+  deployment topology.
 - **ADRs** (`docs/adr/`):
   - [`0001-architecture-foundations.md`](./docs/adr/0001-architecture-foundations.md)
     — hexagonal architecture, Redis Pub/Sub event-driven, model-agnostic
