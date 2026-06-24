@@ -64,6 +64,9 @@ for the layout). Keep this index in sync — when you add a document, add it her
 - [`docs/design/contracts.md`](./docs/design/contracts.md) — the precise,
   language-neutral contract both packages implement (signatures, state machine,
   invariants, errors).
+- [`docs/plans/implementation-plan.md`](./docs/plans/implementation-plan.md) — the
+  phased implementation roadmap with a status snapshot and per-phase Definition of
+  Done.
 - **ADRs** (`docs/adr/`):
   - [`0001-architecture-foundations.md`](./docs/adr/0001-architecture-foundations.md)
     — hexagonal architecture, Redis Pub/Sub event-driven, model-agnostic

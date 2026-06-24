@@ -13,6 +13,8 @@ document belongs in a clearly named subfolder.
   adapters, the event flow, and diagrams. Describes the system as it is now.
 - **`design/`** — Design specs for features and packages (e.g. the shared
   TypeScript/Python agent-loop and approval-gate spec).
+- **`plans/`** — Implementation plans: the phased roadmap for building the
+  project, with a status snapshot.
 
 ## Conventions
 
