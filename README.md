@@ -1,5 +1,7 @@
 # Airlock
 
+[![CI](https://github.com/fedorello/airlock/actions/workflows/ci.yml/badge.svg)](https://github.com/fedorello/airlock/actions/workflows/ci.yml)
+
 **A human-approval gate for the dangerous things an AI agent does.**
 
 Airlock is a small, model-agnostic toolkit for building AI agents that can take
