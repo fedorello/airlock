@@ -1,15 +1,31 @@
 [project]
 name = "airlock"
-version = "0.0.0"
+version = "0.1.0"
 description = "A human-approval gate for the dangerous things an AI agent does."
+readme = "README.md"
 requires-python = ">=3.13"
 license = "MIT"
+authors = [{ name = "Fedor Chishchin" }]
+keywords = ["ai", "agent", "llm", "human-in-the-loop", "approval", "tool-use", "guardrails"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: Software Development :: Libraries",
+  "Typing :: Typed",
+]
 dependencies = [
   "pydantic>=2.13.4",
   "pydantic-settings>=2.14.2",
   "redis>=8.0.1",
   "httpx>=0.28.1",
 ]
+
+[project.urls]
+Homepage = "https://github.com/fedorello/airlock"
+Repository = "https://github.com/fedorello/airlock"
+Issues = "https://github.com/fedorello/airlock/issues"
 
 [dependency-groups]
 dev = [
