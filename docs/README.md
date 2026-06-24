@@ -15,6 +15,8 @@ document belongs in a clearly named subfolder.
   TypeScript/Python agent-loop and approval-gate spec).
 - **`plans/`** — Implementation plans: the phased roadmap for building the
   project, with a status snapshot.
+- **`reports/`** — Implementation reports: what each completed phase delivered,
+  how it maps to the design, and the verification results.
 
 ## Conventions
 
