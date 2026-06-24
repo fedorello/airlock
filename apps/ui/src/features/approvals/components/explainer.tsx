@@ -24,10 +24,14 @@ export function Explainer() {
           on their own, but anything{" "}
           <span className="text-sensitive font-medium">sensitive</span> &mdash;
           a refund, an email, a transfer &mdash; pauses here and cannot run
-          until you <span className="text-approved font-medium">approve</span>,
-          edit, or <span className="text-rejected font-medium">reject</span> it.
-          The boundary is enforced by the architecture, not by trusting the
-          model.
+          until you decide. The boundary is enforced by the architecture, not by
+          trusting the model.
+        </p>
+        <p className="text-muted-foreground">
+          <span className="text-approved font-medium">Approve</span> lets the
+          action run &middot; <span className="font-medium">Edit</span> changes
+          its details first &middot;{" "}
+          <span className="text-rejected font-medium">Reject</span> blocks it.
         </p>
       </div>
     </Card>

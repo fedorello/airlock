@@ -33,12 +33,13 @@ function setup(overrides: Partial<Parameters<typeof ApprovalCard>[0]> = {}) {
 }
 
 describe("ApprovalCard", () => {
-  it("renders the tool, request, args, and context", () => {
+  it("renders a human action, the request, the raw call, and context", () => {
     setup();
 
+    expect(screen.getByText("Issue a refund")).toBeInTheDocument();
+    expect(screen.getByText(/\$49\.99/)).toBeInTheDocument();
+    expect(screen.getByText(/Refund Alice/)).toBeInTheDocument();
     expect(screen.getByText("issue_refund")).toBeInTheDocument();
-    expect(screen.getByText("Refund Alice")).toBeInTheDocument();
-    expect(screen.getByText(/49\.99/)).toBeInTheDocument();
     expect(screen.getByText(/Context/)).toBeInTheDocument();
   });
 

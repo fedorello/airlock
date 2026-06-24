@@ -8,6 +8,7 @@ import { Button } from "@/shared/ui/button";
 import { Card } from "@/shared/ui/card";
 import { Textarea } from "@/shared/ui/textarea";
 
+import { humanizeAction } from "../humanize";
 import { ArgsView } from "./args-view";
 import { RiskBadge } from "./risk-badge";
 import { Timeline } from "./timeline";
@@ -58,16 +59,20 @@ export function ApprovalCard({
     onApproveWithEdits(result);
   };
 
+  const { title, detail } = humanizeAction(approval.toolName, approval.args);
+
   return (
     <Card className="animate-in flex flex-col gap-3">
-      <div className="flex items-center justify-between gap-2">
-        <code className="font-mono text-sm font-semibold">
-          {approval.toolName}
-        </code>
+      <p className="text-muted-foreground text-xs">An AI agent wants to:</p>
+      <div className="flex items-start justify-between gap-2">
+        <h2 className="text-base leading-tight font-semibold">{title}</h2>
         <RiskBadge risk={approval.risk} />
       </div>
+      {detail !== "" && <p className="text-sm">{detail}</p>}
       {approval.request !== "" && (
-        <p className="text-muted-foreground text-sm">{approval.request}</p>
+        <p className="text-muted-foreground text-sm">
+          From the request: &ldquo;{approval.request}&rdquo;
+        </p>
       )}
 
       {mode === "editing" ? (
@@ -90,7 +95,13 @@ export function ApprovalCard({
           {error !== null && <p className="text-rejected text-xs">{error}</p>}
         </div>
       ) : (
-        <ArgsView args={approval.args} />
+        <div className="flex flex-col gap-1">
+          <p className="text-muted-foreground text-xs">
+            Exact call &middot; tool{" "}
+            <code className="font-mono">{approval.toolName}</code>
+          </p>
+          <ArgsView args={approval.args} />
+        </div>
       )}
 
       <Timeline messages={approval.timeline} />
