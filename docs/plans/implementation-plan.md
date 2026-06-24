@@ -34,8 +34,8 @@ the [ADRs](../adr/), and the [pinned stack](../stack.md), and it holds itself to
 | Phase | Title | Status |
 | --- | --- | --- |
 | 0 | Foundations & documentation | ✅ Done |
-| 1 | TypeScript core — agent loop, fakes, tests | ⬜ Next |
-| 2 | TypeScript infrastructure — Redis, providers, config | ⬜ |
+| 1 | TypeScript core — agent loop, fakes, tests | ✅ Done |
+| 2 | TypeScript infrastructure — Redis, providers, config | ⬜ Next |
 | 3 | TypeScript interface — runner, approver, Compose, Makefile, example | ⬜ |
 | 4 | Python parity — core → infrastructure → interface | ⬜ |
 | 5 | CI/CD, enforcement, and agent evals | ⬜ |
@@ -70,32 +70,32 @@ against in-memory fakes. This is the heart of the product.
 
 Deliverables (`packages/ts/src`):
 
-- [ ] `application/gate-policy.ts` → `RiskBasedGatePolicy` (default: `sensitive`
+- [x] `application/gate-policy.ts` → `RiskBasedGatePolicy` (default: `sensitive`
       requires approval, `safe` does not) — implements the `GatePolicy` port.
-- [ ] `application/agent.ts` → the `Agent` use case: `run(input)` and
+- [x] `application/agent.ts` → the `Agent` use case: `run(input)` and
       `resume(runId, requestId, decision)`, with private `advance`,
       `processPending`, `suspendForApproval`, `runToolCall`, `callModel`,
       `completeRun`, `applyDecision`. Constructor takes one dependencies object.
       Every method ≤ 30 lines.
-- [ ] In-memory fakes (`infrastructure/`):
+- [x] In-memory fakes (`infrastructure/`):
   - `providers/fake-llm-provider.ts` — returns scripted completions.
   - `events/in-memory-event-bus.ts` — `EventPublisher` + `EventSubscriber`.
   - `store/in-memory-run-store.ts` — `RunStore`.
   - `audit/in-memory-audit-sink.ts` — `AuditSink`.
   - `clock/fixed-clock.ts` and `clock/system-clock.ts` — `Clock`.
   - `ids/sequential-id-generator.ts` and `ids/uuid-id-generator.ts` — `IdGenerator`.
-- [ ] Export the Agent, the gate policy, and the in-memory fakes from `index.ts`.
+- [x] Export the Agent, the gate policy, and the in-memory fakes from `index.ts`.
 
 Tests (`packages/ts/test`) — assert the contract invariants directly:
 
-- [ ] `safe` tool auto-executes; `sensitive` tool suspends and publishes
+- [x] `safe` tool auto-executes; `sensitive` tool suspends and publishes
       `approval.requested`.
-- [ ] `approve` executes the handler exactly once; `edit` uses the edited args.
-- [ ] `reject` feeds a tool message back and continues (not terminal).
-- [ ] A run reloaded from the store resumes correctly.
-- [ ] `resume` is idempotent: a replayed decision is a no-op (no double execute).
-- [ ] Multiple tool calls in one turn pause at the gated one and resume by cursor.
-- [ ] An unknown tool name raises `UnknownToolError`; unknown run raises
+- [x] `approve` executes the handler exactly once; `edit` uses the edited args.
+- [x] `reject` feeds a tool message back and continues (not terminal).
+- [x] A run reloaded from the store resumes correctly.
+- [x] `resume` is idempotent: a replayed decision is a no-op (no double execute).
+- [x] Multiple tool calls in one turn pause at the gated one and resume by cursor.
+- [x] An unknown tool name raises `UnknownToolError`; unknown run raises
       `RunNotFoundError`.
 
 Done when: the above are green and coverage on `application/` and
