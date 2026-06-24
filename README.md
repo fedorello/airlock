@@ -264,6 +264,51 @@ The takeaway: the safety property is enforced by the **architecture, not a promp
 [`docs/reports/project-report.md`](./docs/reports/project-report.md)** (and the
 [end-to-end verification](./docs/reports/e2e-verification.md)).
 
+## How this was built (and how fast)
+
+Airlock was built **AI-native** — human-directed, written with Claude Code — in a
+single focused session.
+
+**The problem (one line):** an AI agent that can act on untrusted input is dangerous,
+and safety has to be a boundary in the architecture, not a line in a prompt.
+
+**How we solved it:** a small approval gate that sits between _"the model decided to
+act"_ and _"the action happens."_ Sensitive tools pause for a human; safe tools
+don't. No framework — just a hand-written agent loop.
+
+**Key architectural decisions:**
+
+- **Hexagonal (ports & adapters).** The core (loop + gate) depends only on small
+  interfaces, never on HTTP, Redis, or a model vendor. The boundary is enforced by
+  tooling (an ESLint rule + import-linter), so it can't rot.
+- **The gate is a policy, not a prompt.** Risk lives on each tool; a `GatePolicy`
+  decides; the check runs in code, between deciding and executing.
+- **Resumable by design.** A whole run is one serializable object, so it can pause,
+  be saved to Redis, and resume in another process — even after a restart.
+- **Event-driven.** Approvals flow as two events over Redis Pub/Sub, so the approver
+  can live anywhere (CLI today; a web UI or Slack tomorrow — a new adapter, no core
+  change).
+- **Model-agnostic, no SDKs.** Providers call the HTTP API directly behind one port;
+  the model is a setting.
+- **Two languages, one design.** TypeScript and Python mirror each other and share a
+  golden eval dataset, which proves they behave identically.
+- **Deterministic tests.** In-memory fakes (not mocks), a fixed clock and id
+  generator — every test is reproducible and needs no keys.
+
+**Stack:**
+
+- **TypeScript** — Node 24, `zod`, `ioredis`; Vitest, ESLint, Prettier, tsup.
+- **Python** — 3.14 + `uv`, `pydantic` / `pydantic-settings`, `httpx`, `redis`;
+  pytest, Ruff, mypy (`--strict`), import-linter.
+- **Infra & CI** — Redis 8, Docker Compose, a Makefile, and GitHub Actions (both
+  language gates + commitlint + a Trivy CVE scan).
+
+**How long it took:** from the first scaffold commit to a tested, CI-green **v0.1.0**
+in both languages, the git history spans **under four hours** across **40+ small,
+conventional commits** — each one passing the full gate. That window includes the
+docs and ADRs, the TypeScript build, the full Python parity, CI, the eval suite, and
+the end-to-end verification.
+
 ## Status
 
 **v0.1.0** — complete and tested in both languages: the agent loop and gate,
