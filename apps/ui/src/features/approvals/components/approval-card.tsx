@@ -62,18 +62,22 @@ export function ApprovalCard({
   const { title, detail } = humanizeAction(approval.toolName, approval.args);
 
   return (
-    <Card className="animate-in flex flex-col gap-3">
-      <p className="text-muted-foreground text-xs">An AI agent wants to:</p>
-      <div className="flex items-start justify-between gap-2">
-        <h2 className="text-base leading-tight font-semibold">{title}</h2>
-        <RiskBadge risk={approval.risk} />
+    <Card className="animate-in flex flex-col gap-4 p-5">
+      <div className="flex flex-col gap-1.5">
+        <p className="text-muted-foreground text-xs">An AI agent wants to:</p>
+        <div className="flex items-center justify-between gap-3">
+          <h2 className="text-base leading-tight font-semibold">{title}</h2>
+          <RiskBadge risk={approval.risk} />
+        </div>
+        {detail !== "" && (
+          <p className="text-foreground text-sm font-medium">{detail}</p>
+        )}
+        {approval.request !== "" && (
+          <p className="text-muted-foreground text-sm">
+            From the request: &ldquo;{approval.request}&rdquo;
+          </p>
+        )}
       </div>
-      {detail !== "" && <p className="text-sm">{detail}</p>}
-      {approval.request !== "" && (
-        <p className="text-muted-foreground text-sm">
-          From the request: &ldquo;{approval.request}&rdquo;
-        </p>
-      )}
 
       {mode === "editing" ? (
         <div className="flex flex-col gap-1">
@@ -126,7 +130,7 @@ export function ApprovalCard({
         </div>
       )}
 
-      <div className="flex justify-end gap-2">
+      <div className="border-border flex justify-end gap-2 border-t pt-3">
         {mode === "idle" && (
           <>
             <Button

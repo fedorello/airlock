@@ -20,10 +20,12 @@ async function loadInitialApprovals(): Promise<PendingApproval[]> {
 export default async function ApprovalsPage() {
   const initialApprovals = await loadInitialApprovals();
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-6">
       <Explainer />
-      <h1 className="text-lg font-semibold">Pending approvals</h1>
-      <ApprovalsBoard initialApprovals={initialApprovals} />
+      <section className="flex flex-col gap-3">
+        <h1 className="text-lg font-semibold">Pending approvals</h1>
+        <ApprovalsBoard initialApprovals={initialApprovals} />
+      </section>
     </div>
   );
 }
