@@ -67,7 +67,8 @@ flowchart LR
 
     API --> LOOP
     RUN --> LOOP
-    APP --> P2
+    RUN -.->|subscribe decisions| P2
+    APP -.->|requests / decisions| P2
     LOOP --> GATE
     LOOP --> MODEL
     LOOP --> P1 --> A1
@@ -95,7 +96,7 @@ Pure data and behavior, no IO.
 | `Tool` | `name`, `description`, `parameters` (JSON Schema), `risk`, and a `handler`. The handler is the only place a side effect happens. |
 | `ToolCall` | A model's request to run a tool: `id`, `name`, `args`. |
 | `Message` | A conversation entry: `user` / `assistant` / `tool`, with content and tool-call links. |
-| `ApprovalRequest` | Raised when a gated tool call is reached: `runId`, `requestId`, `tool`, `args`, `risk`, `context`. |
+| `ApprovalRequest` | Raised when a gated tool call is reached: `runId`, `requestId`, the originating `toolCall` (`id`, `name`, `args`), `risk`, and `context`. |
 | `ApprovalDecision` | A human's answer: `approve` \| `edit` (with new args) \| `reject` (with reason), plus `approver`. |
 | `RunState` | The aggregate root: `runId`, `status`, `messages`, the current turn's pending tool calls + cursor, the open `ApprovalRequest` (if any), and metadata. Fully serializable. |
 | `AuditEvent` | An immutable record of one thing that happened. |
@@ -112,8 +113,10 @@ The core depends on these interfaces and nothing else.
 - **`LlmProvider`** — `complete(system, messages, tools) -> { text?, toolCalls[] }`.
   One method, normalized across vendors. Tool-use in, tool-calls out.
 - **`EventBus`** — `publish(topic, event)` and `subscribe(topic, handler)`. The
-  event-driven backbone. The core publishes approval requests and lifecycle
-  events and consumes decisions through this port; it never imports Redis.
+  event-driven backbone. The **core publishes** approval requests and lifecycle
+  events through this port and never imports Redis. **Subscription is a driving
+  concern**: the Agent Runner subscribes to `approval.decided` and invokes the
+  core's `resume()`, and approvers subscribe to `approval.requested`.
 - **`RunStore`** — `save(runState)` and `load(runId)`. Enables pause/resume and
   multi-process operation.
 - **`AuditSink`** — `record(auditEvent)`. Append-only.
@@ -179,27 +182,32 @@ process pending tool calls:
 
 resume(state, decision):
   request = state.approval
+  tool = tools[request.toolCall.name]
   record audit(approval_decided, decision)
   if decision is approve or edit:
-    args = decision.editedArgs ?? request.args
+    args = decision.editedArgs ?? request.toolCall.args
     result = tool.handler(args)                     # gated tool runs ONLY here
     record audit(tool_executed)
-    state.messages += tool(request.callId, result)
+    state.messages += tool(request.toolCall.id, result)
   else: # reject
-    state.messages += tool(request.callId, "Rejected by a human: " + reason)
+    state.messages += tool(request.toolCall.id, "Rejected by a human: " + decision.reason)
   state.approval = null
   state.status = running
   state.cursor += 1
   return advance(state)   # continue the same turn, then back to the llm
 ```
 
-Two details worth calling out:
+Three details worth calling out:
 
 - **Multiple tool calls in one turn** are queued with a cursor, so the loop can
   pause on a gated call and pick up exactly where it left off on resume.
 - **Reject is not a dead end.** A rejection is fed back to the model as a tool
   result, so the agent can apologize, try a safe alternative, or ask the user —
   rather than crashing.
+- **Resume is idempotent**, keyed by the request's `requestId`: replaying a
+  decision (a duplicate event) cannot execute the gated tool twice — consistent
+  with [ADR-0002](../adr/0002-approval-events-over-redis-pubsub.md) and
+  [ADR-0004](../adr/0004-resumable-runs-via-runstate-and-runstore.md).
 
 ---
 
