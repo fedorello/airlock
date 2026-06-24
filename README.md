@@ -58,6 +58,96 @@ Everything in between is handled for you:
 The point in one line: **the agent physically cannot send or write without
 passing the gate.**
 
+## Quickstart
+
+The packages live in [`packages/ts`](./packages/ts) and
+[`packages/py`](./packages/py). `make install` installs both; the snippets below
+import from `airlock` (the package name once published).
+
+Gate a dangerous action in ~20 lines. The agent wants to send an email — the run
+**pauses** before it happens, and the email is sent only once you approve.
+
+**TypeScript**
+
+```ts
+import {
+  Agent, DecisionType, FakeLlmProvider, InMemoryAuditSink, InMemoryEventBus,
+  InMemoryRunStore, RiskBasedGatePolicy, RiskTier, SystemClock, UuidIdGenerator,
+} from "airlock";
+
+const sendEmail = {
+  name: "send_email", description: "Send an email", parameters: { type: "object" },
+  risk: RiskTier.Sensitive, // sensitive: must be approved before it runs
+  handler: async (args) => { console.log("SENDING:", args); return "sent"; },
+};
+
+// A scripted model — swap for AnthropicProvider / OpenAiProvider in production.
+const provider = new FakeLlmProvider([
+  { text: null, toolCalls: [{ id: "1", name: "send_email", args: { to: "alice@example.com" } }] },
+  { text: "Done.", toolCalls: [] },
+]);
+
+const agent = new Agent({
+  provider, tools: [sendEmail], events: new InMemoryEventBus(), store: new InMemoryRunStore(),
+  audit: new InMemoryAuditSink(), clock: new SystemClock(), ids: new UuidIdGenerator(),
+  gatePolicy: new RiskBasedGatePolicy(), systemPrompt: "You are a support agent.",
+});
+
+const paused = await agent.run("Email Alice a refund confirmation");
+console.log(paused.status); // "awaiting_approval" — nothing sent yet
+const done = await agent.resume(paused.runId, paused.approval!.requestId, {
+  type: DecisionType.Approve, approver: "you@example.com",
+});
+console.log(done.status); // "completed" — now the email was sent
+```
+
+**Python**
+
+```python
+import asyncio
+from airlock import (
+    Agent, AgentDependencies, ApproveDecision, CompletionResult, FakeLlmProvider,
+    InMemoryAuditSink, InMemoryEventBus, InMemoryRunStore, RiskBasedGatePolicy,
+    RiskTier, SystemClock, Tool, ToolCall, ToolCallId, UuidIdGenerator,
+)
+
+async def send_email(args):
+    print("SENDING:", dict(args)); return "sent"
+
+tool = Tool(name="send_email", description="Send an email", parameters={"type": "object"},
+            risk=RiskTier.SENSITIVE, handler=send_email)  # sensitive: must be approved
+
+# A scripted model — swap for AnthropicProvider / OpenAiProvider in production.
+provider = FakeLlmProvider([
+    CompletionResult(text=None, tool_calls=(
+        ToolCall(id=ToolCallId("1"), name="send_email", args={"to": "alice@example.com"}),)),
+    CompletionResult(text="Done.", tool_calls=()),
+])
+
+agent = Agent(AgentDependencies(
+    provider=provider, tools=[tool], events=InMemoryEventBus(), store=InMemoryRunStore(),
+    audit=InMemoryAuditSink(), clock=SystemClock(), ids=UuidIdGenerator(),
+    gate_policy=RiskBasedGatePolicy(), system_prompt="You are a support agent."))
+
+async def main():
+    paused = await agent.run("Email Alice a refund confirmation")
+    print(paused.status)  # "awaiting_approval" — nothing sent yet
+    done = await agent.resume(paused.run_id, paused.approval.request_id,
+                              ApproveDecision(approver="you@example.com"))
+    print(done.status)  # "completed" — now the email was sent
+
+asyncio.run(main())
+```
+
+Want to see it end to end? Run the support-agent demo — no API key needed:
+
+```bash
+make demo     # TypeScript, in-memory
+make py-demo  # Python, in-memory
+make up       # TypeScript over real Redis (Docker Compose)
+make up-py    # Python over real Redis (Docker Compose)
+```
+
 ## How it's different
 
 The "AI agent governance / firewall" space is crowded, but almost everything in
@@ -85,6 +175,10 @@ three things the convenient kits skip:
   over **Redis Pub/Sub**, so the agent and the humans approving it are decoupled
   and can live in different processes or services.
 - **Model-agnostic providers.** Each LLM provider is an adapter behind one port.
+
+See the [full architecture, with diagrams](./docs/architecture/overview.md), the
+[language-neutral contract](./docs/design/contracts.md), and the
+[decision records](./docs/adr/).
 
 ## Status
 
