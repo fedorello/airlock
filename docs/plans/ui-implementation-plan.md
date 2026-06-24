@@ -13,8 +13,8 @@ reads the run store. Proving that decoupling is half the point of building it.
 | U0 | Scaffold: Next.js + Tailwind v4 + shadcn, theme, gates | ✅ Done |
 | U1 | Redis bridge + API (list pending, decide, live stream) | ✅ Done |
 | U2 | Approvals dashboard: cards, badges, approve / reject | ✅ Done |
-| U3 | Edit flow, reject-with-reason, run detail / audit timeline | ⬜ Next |
-| U4 | Polish: empty states, toasts, motion, dark mode, a11y, responsive | ⬜ |
+| U3 | Edit flow, reject-with-reason, run detail / audit timeline | ✅ Done |
+| U4 | Polish: empty states, toasts, motion, dark mode, a11y, responsive | ⬜ Next |
 | U5 | Seed/demo, Docker + Compose, tests, CI, README | ⬜ |
 
 Done when: from a clean checkout, `make up-ui` brings up Redis + the agent demo +

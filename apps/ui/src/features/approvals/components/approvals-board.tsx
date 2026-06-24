@@ -21,11 +21,21 @@ export function ApprovalsBoard({
   const onApprove = (approval: PendingApproval): void => {
     void decide(approval, { type: DecisionType.Approve, approver: APPROVER });
   };
-  const onReject = (approval: PendingApproval): void => {
+  const onApproveWithEdits = (
+    approval: PendingApproval,
+    editedArgs: Record<string, unknown>,
+  ): void => {
+    void decide(approval, {
+      type: DecisionType.Edit,
+      approver: APPROVER,
+      editedArgs,
+    });
+  };
+  const onReject = (approval: PendingApproval, reason: string): void => {
     void decide(approval, {
       type: DecisionType.Reject,
       approver: APPROVER,
-      reason: "Rejected from the dashboard",
+      reason,
     });
   };
 
@@ -35,6 +45,7 @@ export function ApprovalsBoard({
       status={status}
       busyRunId={busyRunId}
       onApprove={onApprove}
+      onApproveWithEdits={onApproveWithEdits}
       onReject={onReject}
     />
   );

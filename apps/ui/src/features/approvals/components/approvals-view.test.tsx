@@ -22,6 +22,7 @@ function renderView(props: Partial<Parameters<typeof ApprovalsView>[0]> = {}) {
       status="ready"
       busyRunId={null}
       onApprove={vi.fn()}
+      onApproveWithEdits={vi.fn()}
       onReject={vi.fn()}
       {...props}
     />,

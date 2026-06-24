@@ -9,7 +9,11 @@ interface ApprovalsViewProps {
   status: ApprovalsStatus;
   busyRunId: string | null;
   onApprove: (approval: PendingApproval) => void;
-  onReject: (approval: PendingApproval) => void;
+  onApproveWithEdits: (
+    approval: PendingApproval,
+    editedArgs: Record<string, unknown>,
+  ) => void;
+  onReject: (approval: PendingApproval, reason: string) => void;
 }
 
 /** Presentational queue: pure props in, no data fetching, so it is easy to test. */
@@ -18,6 +22,7 @@ export function ApprovalsView({
   status,
   busyRunId,
   onApprove,
+  onApproveWithEdits,
   onReject,
 }: ApprovalsViewProps) {
   if (status === "loading") {
@@ -43,8 +48,11 @@ export function ApprovalsView({
           onApprove={() => {
             onApprove(approval);
           }}
-          onReject={() => {
-            onReject(approval);
+          onApproveWithEdits={(editedArgs) => {
+            onApproveWithEdits(approval, editedArgs);
+          }}
+          onReject={(reason) => {
+            onReject(approval, reason);
           }}
         />
       ))}
