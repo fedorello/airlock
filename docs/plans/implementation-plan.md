@@ -37,7 +37,7 @@ the [ADRs](../adr/), and the [pinned stack](../stack.md), and it holds itself to
 | 1 | TypeScript core — agent loop, fakes, tests | ✅ Done |
 | 2 | TypeScript infrastructure — Redis, providers, config | ✅ Done |
 | 3 | TypeScript interface — runner, approver, Compose, Makefile, example | ✅ Done |
-| 4 | Python parity — core → infrastructure → interface | ⬜ Next |
+| 4 | Python parity — core → infrastructure → interface | ✅ Done |
 | 5 | CI/CD, enforcement, and agent evals | ⬜ |
 | 6 | Polish & release readiness | ⬜ |
 
@@ -179,15 +179,15 @@ tooling rule, ADR-0002.
 
 Goal: the same design in idiomatic Python (ADR-0006), mirroring Phases 1–3.
 
-- [ ] **4.1 Core.** `packages/py` with `uv` + `pyproject.toml` (hatchling),
+- [x] **4.1 Core.** `packages/py` with `uv` + `pyproject.toml` (hatchling),
       `ruff`, `mypy --strict`, `pytest`. `domain` (with `pydantic` where input is
       validated) + ports as `Protocol`s + the `Agent` + in-memory fakes + unit
       tests ≥ 90%.
-- [ ] **4.2 Infrastructure.** Redis adapters (`redis` async), Anthropic + OpenAI
+- [x] **4.2 Infrastructure.** Redis adapters (`redis` async), Anthropic + OpenAI
       providers, JSONL/stdout audit, `pydantic-settings` config, integration tests.
-- [ ] **4.3 Interface.** Runner + CLI approver + the support-agent example; a
+- [x] **4.3 Interface.** Runner + CLI approver + the support-agent example; a
       Python service in the same `docker-compose.yml`; Makefile parity.
-- [ ] `import-linter` enforces that `domain` imports no infrastructure
+- [x] `import-linter` enforces that `domain` imports no infrastructure
       (CODING_PRINCIPLES §9.2).
 
 Done when: `ruff`, `mypy --strict`, and `pytest` (coverage ≥ 90%) are green; the

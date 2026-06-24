@@ -47,10 +47,16 @@ from airlock.infrastructure.providers.http import (
 from airlock.infrastructure.providers.openai import OpenAiOptions, OpenAiProvider
 from airlock.infrastructure.store.in_memory import InMemoryRunStore
 from airlock.infrastructure.store.redis_run_store import RedisRunStore
+from airlock.interface.approver.approver import Approver, DecisionSource
+from airlock.interface.approver.auto_approve import auto_approve_decision_source
+from airlock.interface.approver.cli_decision_source import cli_decision_source
+from airlock.interface.event_schemas import parse_approval_decided, parse_approval_requested
+from airlock.interface.runner import AgentRunner
 
 __all__ = [
     "Agent",
     "AgentDependencies",
+    "AgentRunner",
     "AirlockError",
     "AnthropicOptions",
     "AnthropicProvider",
@@ -58,6 +64,7 @@ __all__ = [
     "ApprovalDecision",
     "ApprovalRequest",
     "ApproveDecision",
+    "Approver",
     "AssistantMessage",
     "AuditEvent",
     "AuditEventType",
@@ -65,6 +72,7 @@ __all__ = [
     "Clock",
     "CompletionRequest",
     "CompletionResult",
+    "DecisionSource",
     "DecisionType",
     "EditDecision",
     "EventHandler",
@@ -113,7 +121,11 @@ __all__ = [
     "UnknownToolError",
     "UserMessage",
     "UuidIdGenerator",
+    "auto_approve_decision_source",
+    "cli_decision_source",
     "file_audit_sink",
+    "parse_approval_decided",
+    "parse_approval_requested",
     "post_json",
     "stdout_audit_sink",
 ]

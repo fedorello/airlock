@@ -1,6 +1,7 @@
-# Airlock demo stack: Redis plus the support-agent demo, which runs the full
-# pause/approve/resume flow over Redis Pub/Sub (the same decoupled shape as
-# production). `docker compose up` runs the demo and exits with its status.
+# Airlock demo stack: Redis plus the support-agent demos (TypeScript and Python),
+# each running the full pause/approve/resume flow over Redis Pub/Sub (the same
+# decoupled shape as production). `make up` runs the TypeScript demo; `make up-py`
+# runs the Python demo. Each exits with its demo's status.
 services:
   redis:
     image: redis:8.8-alpine
@@ -14,6 +15,16 @@ services:
     build:
       context: ../..
       dockerfile: deploy/docker/Dockerfile
+    environment:
+      AIRLOCK_REDIS_URL: "redis://redis:6379"
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  demo-py:
+    build:
+      context: ../..
+      dockerfile: deploy/docker/Dockerfile.py
     environment:
       AIRLOCK_REDIS_URL: "redis://redis:6379"
     depends_on:
