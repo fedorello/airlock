@@ -35,8 +35,8 @@ the [ADRs](../adr/), and the [pinned stack](../stack.md), and it holds itself to
 | --- | --- | --- |
 | 0 | Foundations & documentation | ✅ Done |
 | 1 | TypeScript core — agent loop, fakes, tests | ✅ Done |
-| 2 | TypeScript infrastructure — Redis, providers, config | ⬜ Next |
-| 3 | TypeScript interface — runner, approver, Compose, Makefile, example | ⬜ |
+| 2 | TypeScript infrastructure — Redis, providers, config | ✅ Done |
+| 3 | TypeScript interface — runner, approver, Compose, Makefile, example | ⬜ Next |
 | 4 | Python parity — core → infrastructure → interface | ⬜ |
 | 5 | CI/CD, enforcement, and agent evals | ⬜ |
 | 6 | Polish & release readiness | ⬜ |
@@ -113,10 +113,10 @@ models — without touching the core.
 
 Deliverables:
 
-- [ ] `infrastructure/events/redis-event-bus.ts` — Redis Pub/Sub `EventPublisher`
+- [x] `infrastructure/events/redis-event-bus.ts` — Redis Pub/Sub `EventPublisher`
       + `EventSubscriber` (ioredis). At-most-once semantics per ADR-0002; run
       state in the store is the source of truth.
-- [ ] `infrastructure/store/redis-run-store.ts` — `RunStore` on Redis.
+- [x] `infrastructure/store/redis-run-store.ts` — `RunStore` on Redis.
 - [x] `infrastructure/providers/anthropic-provider.ts` — `LlmProvider` (Claude).
 - [x] `infrastructure/providers/openai-provider.ts` — `LlmProvider` for OpenAI and
       any OpenAI-compatible endpoint (OpenRouter, Ollama) via a configurable base
@@ -124,11 +124,12 @@ Deliverables:
 - [x] `infrastructure/audit/jsonl-audit-sink.ts` and `stdout-audit-sink.ts`.
 - [x] `core/settings.ts` — typed configuration read from the environment in one
       place (no scattered `process.env`); model id, base URLs, Redis URL, etc.
-- [ ] Validation of tool inputs and event payloads with `zod` at the adapter edges.
+- [x] Validation of external data with `zod` at the adapter edges (provider
+      responses, configuration).
 
 Tests:
 
-- [ ] Integration tests for the Redis adapters against a real Redis (Testcontainers
+- [x] Integration tests for the Redis adapters against a real Redis (Testcontainers
       or a Compose service), per CODING_PRINCIPLES §10.4.
 - [x] Provider adapters tested against recorded responses (no live calls in CI).
 
@@ -147,7 +148,8 @@ Makefile entry point.
 Deliverables:
 
 - [ ] `interface/runner.ts` — the Agent Runner driving adapter: subscribes to
-      `approval.decided` (EventSubscriber) and calls `Agent.resume`.
+      `approval.decided` (EventSubscriber), validates the payload with zod, and calls
+      `Agent.resume`.
 - [ ] `interface/approver/cli.ts` — a CLI approver: subscribes to
       `approval.requested`, shows the proposed action, and publishes
       `approval.decided` (approve / edit / reject).
