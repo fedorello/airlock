@@ -79,6 +79,10 @@ for the layout). Keep this index in sync — when you add a document, add it her
   (CI/CD, enforcement, and agent evals) implementation report.
 - [`docs/reports/phase-6-report.md`](./docs/reports/phase-6-report.md) — Phase 6
   (polish & release readiness) implementation report.
+- [`docs/reports/project-report.md`](./docs/reports/project-report.md) — the big
+  plain-language report: the problem, what we built, and how we proved it works.
+- [`docs/reports/e2e-verification.md`](./docs/reports/e2e-verification.md) — the
+  end-to-end verification (adversarial injection, multi-process resume, edit).
 - [`CHANGELOG.md`](./CHANGELOG.md) and [`CONTRIBUTING.md`](./CONTRIBUTING.md) —
   release history and the versioning / contribution conventions.
 - **ADRs** (`docs/adr/`):
