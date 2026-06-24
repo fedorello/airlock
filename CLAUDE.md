@@ -75,6 +75,8 @@ for the layout). Keep this index in sync — when you add a document, add it her
   (runner, approver, example, Compose, Makefile) implementation report.
 - [`docs/reports/phase-4-report.md`](./docs/reports/phase-4-report.md) — Phase 4
   (Python parity — core, infrastructure, interface, example) implementation report.
+- [`docs/reports/phase-5-report.md`](./docs/reports/phase-5-report.md) — Phase 5
+  (CI/CD, enforcement, and agent evals) implementation report.
 - **ADRs** (`docs/adr/`):
   - [`0001-architecture-foundations.md`](./docs/adr/0001-architecture-foundations.md)
     — hexagonal architecture, Redis Pub/Sub event-driven, model-agnostic

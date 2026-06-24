@@ -38,8 +38,8 @@ the [ADRs](../adr/), and the [pinned stack](../stack.md), and it holds itself to
 | 2 | TypeScript infrastructure — Redis, providers, config | ✅ Done |
 | 3 | TypeScript interface — runner, approver, Compose, Makefile, example | ✅ Done |
 | 4 | Python parity — core → infrastructure → interface | ✅ Done |
-| 5 | CI/CD, enforcement, and agent evals | ⬜ |
-| 6 | Polish & release readiness | ⬜ |
+| 5 | CI/CD, enforcement, and agent evals | ✅ Done |
+| 6 | Polish & release readiness | ⬜ Next |
 
 ---
 
@@ -202,14 +202,14 @@ CODING_PRINCIPLES §7.11 (uv only), §9.2 (layer boundaries).
 
 Goal: machines enforce the standard on every push.
 
-- [ ] GitHub Actions: run both packages' gates (typecheck/lint/format/test +
+- [x] GitHub Actions: run both packages' gates (typecheck/lint/format/test +
       coverage) on Node 24 and Python 3.14.
-- [ ] `commitlint` with `@commitlint/config-conventional` in CI; a local git hook.
-- [ ] `import-linter` (Python) and an ESLint boundary rule (TypeScript) in CI to
+- [x] `commitlint` with `@commitlint/config-conventional` in CI; a local git hook.
+- [x] `import-linter` (Python) and an ESLint boundary rule (TypeScript) in CI to
       enforce hexagonal imports.
-- [ ] Dependency scanning (SCA) on PRs; a Critical/High CVE blocks merge
+- [x] Dependency scanning (SCA) on PRs; a Critical/High CVE blocks merge
       (CODING_PRINCIPLES §7.10).
-- [ ] **Agent eval suite** for the support-agent (CODING_PRINCIPLES §10.6): a
+- [x] **Agent eval suite** for the support-agent (CODING_PRINCIPLES §10.6): a
       golden dataset (≥ 30 cases) asserting the gate fires on every sensitive
       action and never on safe ones, and that tool sequences are correct.
 
