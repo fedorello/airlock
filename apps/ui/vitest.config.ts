@@ -20,9 +20,12 @@ export default defineConfig({
       include: ["src/**/*.{ts,tsx}"],
       exclude: [
         "src/**/*.test.{ts,tsx}",
-        "src/app/layout.tsx",
-        "src/app/page.tsx",
         "src/**/*.d.ts",
+        // Composition root and thin wiring (covered via integration / e2e).
+        "src/app/**",
+        "src/core/container.ts",
+        // Redis adapters are covered by integration tests against a real Redis.
+        "src/infrastructure/redis/**",
       ],
       thresholds: { lines: 90, branches: 90, functions: 90, statements: 90 },
     },
