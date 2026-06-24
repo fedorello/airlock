@@ -71,6 +71,8 @@ for the layout). Keep this index in sync — when you add a document, add it her
   (agent loop + fakes + tests) implementation report.
 - [`docs/reports/phase-2-report.md`](./docs/reports/phase-2-report.md) — Phase 2
   (providers, settings, audit, Redis) implementation report.
+- [`docs/reports/phase-3-report.md`](./docs/reports/phase-3-report.md) — Phase 3
+  (runner, approver, example, Compose, Makefile) implementation report.
 - **ADRs** (`docs/adr/`):
   - [`0001-architecture-foundations.md`](./docs/adr/0001-architecture-foundations.md)
     — hexagonal architecture, Redis Pub/Sub event-driven, model-agnostic
