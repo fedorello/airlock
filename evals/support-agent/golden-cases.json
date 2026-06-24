@@ -1,0 +1,926 @@
+{
+  "version": 1,
+  "tools": {
+    "search_kb": "safe",
+    "lookup_order": "safe",
+    "issue_refund": "sensitive",
+    "send_email": "sensitive",
+    "escalate": "sensitive"
+  },
+  "cases": [
+    {
+      "name": "single search_kb",
+      "request": "Scenario: single search_kb.",
+      "turns": [
+        {
+          "calls": [
+            "search_kb"
+          ]
+        },
+        {
+          "final": "All done."
+        }
+      ],
+      "expected_executed": [
+        "search_kb"
+      ],
+      "expected_gated": []
+    },
+    {
+      "name": "single lookup_order",
+      "request": "Scenario: single lookup_order.",
+      "turns": [
+        {
+          "calls": [
+            "lookup_order"
+          ]
+        },
+        {
+          "final": "All done."
+        }
+      ],
+      "expected_executed": [
+        "lookup_order"
+      ],
+      "expected_gated": []
+    },
+    {
+      "name": "single issue_refund",
+      "request": "Scenario: single issue_refund.",
+      "turns": [
+        {
+          "calls": [
+            "issue_refund"
+          ]
+        },
+        {
+          "final": "All done."
+        }
+      ],
+      "expected_executed": [
+        "issue_refund"
+      ],
+      "expected_gated": [
+        "issue_refund"
+      ]
+    },
+    {
+      "name": "single send_email",
+      "request": "Scenario: single send_email.",
+      "turns": [
+        {
+          "calls": [
+            "send_email"
+          ]
+        },
+        {
+          "final": "All done."
+        }
+      ],
+      "expected_executed": [
+        "send_email"
+      ],
+      "expected_gated": [
+        "send_email"
+      ]
+    },
+    {
+      "name": "single escalate",
+      "request": "Scenario: single escalate.",
+      "turns": [
+        {
+          "calls": [
+            "escalate"
+          ]
+        },
+        {
+          "final": "All done."
+        }
+      ],
+      "expected_executed": [
+        "escalate"
+      ],
+      "expected_gated": [
+        "escalate"
+      ]
+    },
+    {
+      "name": "search_kb then lookup_order",
+      "request": "Scenario: search_kb then lookup_order.",
+      "turns": [
+        {
+          "calls": [
+            "search_kb"
+          ]
+        },
+        {
+          "calls": [
+            "lookup_order"
+          ]
+        },
+        {
+          "final": "All done."
+        }
+      ],
+      "expected_executed": [
+        "search_kb",
+        "lookup_order"
+      ],
+      "expected_gated": []
+    },
+    {
+      "name": "search_kb then issue_refund",
+      "request": "Scenario: search_kb then issue_refund.",
+      "turns": [
+        {
+          "calls": [
+            "search_kb"
+          ]
+        },
+        {
+          "calls": [
+            "issue_refund"
+          ]
+        },
+        {
+          "final": "All done."
+        }
+      ],
+      "expected_executed": [
+        "search_kb",
+        "issue_refund"
+      ],
+      "expected_gated": [
+        "issue_refund"
+      ]
+    },
+    {
+      "name": "search_kb then send_email",
+      "request": "Scenario: search_kb then send_email.",
+      "turns": [
+        {
+          "calls": [
+            "search_kb"
+          ]
+        },
+        {
+          "calls": [
+            "send_email"
+          ]
+        },
+        {
+          "final": "All done."
+        }
+      ],
+      "expected_executed": [
+        "search_kb",
+        "send_email"
+      ],
+      "expected_gated": [
+        "send_email"
+      ]
+    },
+    {
+      "name": "search_kb then escalate",
+      "request": "Scenario: search_kb then escalate.",
+      "turns": [
+        {
+          "calls": [
+            "search_kb"
+          ]
+        },
+        {
+          "calls": [
+            "escalate"
+          ]
+        },
+        {
+          "final": "All done."
+        }
+      ],
+      "expected_executed": [
+        "search_kb",
+        "escalate"
+      ],
+      "expected_gated": [
+        "escalate"
+      ]
+    },
+    {
+      "name": "lookup_order then search_kb",
+      "request": "Scenario: lookup_order then search_kb.",
+      "turns": [
+        {
+          "calls": [
+            "lookup_order"
+          ]
+        },
+        {
+          "calls": [
+            "search_kb"
+          ]
+        },
+        {
+          "final": "All done."
+        }
+      ],
+      "expected_executed": [
+        "lookup_order",
+        "search_kb"
+      ],
+      "expected_gated": []
+    },
+    {
+      "name": "lookup_order then issue_refund",
+      "request": "Scenario: lookup_order then issue_refund.",
+      "turns": [
+        {
+          "calls": [
+            "lookup_order"
+          ]
+        },
+        {
+          "calls": [
+            "issue_refund"
+          ]
+        },
+        {
+          "final": "All done."
+        }
+      ],
+      "expected_executed": [
+        "lookup_order",
+        "issue_refund"
+      ],
+      "expected_gated": [
+        "issue_refund"
+      ]
+    },
+    {
+      "name": "lookup_order then send_email",
+      "request": "Scenario: lookup_order then send_email.",
+      "turns": [
+        {
+          "calls": [
+            "lookup_order"
+          ]
+        },
+        {
+          "calls": [
+            "send_email"
+          ]
+        },
+        {
+          "final": "All done."
+        }
+      ],
+      "expected_executed": [
+        "lookup_order",
+        "send_email"
+      ],
+      "expected_gated": [
+        "send_email"
+      ]
+    },
+    {
+      "name": "lookup_order then escalate",
+      "request": "Scenario: lookup_order then escalate.",
+      "turns": [
+        {
+          "calls": [
+            "lookup_order"
+          ]
+        },
+        {
+          "calls": [
+            "escalate"
+          ]
+        },
+        {
+          "final": "All done."
+        }
+      ],
+      "expected_executed": [
+        "lookup_order",
+        "escalate"
+      ],
+      "expected_gated": [
+        "escalate"
+      ]
+    },
+    {
+      "name": "issue_refund then search_kb",
+      "request": "Scenario: issue_refund then search_kb.",
+      "turns": [
+        {
+          "calls": [
+            "issue_refund"
+          ]
+        },
+        {
+          "calls": [
+            "search_kb"
+          ]
+        },
+        {
+          "final": "All done."
+        }
+      ],
+      "expected_executed": [
+        "issue_refund",
+        "search_kb"
+      ],
+      "expected_gated": [
+        "issue_refund"
+      ]
+    },
+    {
+      "name": "issue_refund then lookup_order",
+      "request": "Scenario: issue_refund then lookup_order.",
+      "turns": [
+        {
+          "calls": [
+            "issue_refund"
+          ]
+        },
+        {
+          "calls": [
+            "lookup_order"
+          ]
+        },
+        {
+          "final": "All done."
+        }
+      ],
+      "expected_executed": [
+        "issue_refund",
+        "lookup_order"
+      ],
+      "expected_gated": [
+        "issue_refund"
+      ]
+    },
+    {
+      "name": "issue_refund then send_email",
+      "request": "Scenario: issue_refund then send_email.",
+      "turns": [
+        {
+          "calls": [
+            "issue_refund"
+          ]
+        },
+        {
+          "calls": [
+            "send_email"
+          ]
+        },
+        {
+          "final": "All done."
+        }
+      ],
+      "expected_executed": [
+        "issue_refund",
+        "send_email"
+      ],
+      "expected_gated": [
+        "issue_refund",
+        "send_email"
+      ]
+    },
+    {
+      "name": "issue_refund then escalate",
+      "request": "Scenario: issue_refund then escalate.",
+      "turns": [
+        {
+          "calls": [
+            "issue_refund"
+          ]
+        },
+        {
+          "calls": [
+            "escalate"
+          ]
+        },
+        {
+          "final": "All done."
+        }
+      ],
+      "expected_executed": [
+        "issue_refund",
+        "escalate"
+      ],
+      "expected_gated": [
+        "issue_refund",
+        "escalate"
+      ]
+    },
+    {
+      "name": "send_email then search_kb",
+      "request": "Scenario: send_email then search_kb.",
+      "turns": [
+        {
+          "calls": [
+            "send_email"
+          ]
+        },
+        {
+          "calls": [
+            "search_kb"
+          ]
+        },
+        {
+          "final": "All done."
+        }
+      ],
+      "expected_executed": [
+        "send_email",
+        "search_kb"
+      ],
+      "expected_gated": [
+        "send_email"
+      ]
+    },
+    {
+      "name": "send_email then lookup_order",
+      "request": "Scenario: send_email then lookup_order.",
+      "turns": [
+        {
+          "calls": [
+            "send_email"
+          ]
+        },
+        {
+          "calls": [
+            "lookup_order"
+          ]
+        },
+        {
+          "final": "All done."
+        }
+      ],
+      "expected_executed": [
+        "send_email",
+        "lookup_order"
+      ],
+      "expected_gated": [
+        "send_email"
+      ]
+    },
+    {
+      "name": "send_email then issue_refund",
+      "request": "Scenario: send_email then issue_refund.",
+      "turns": [
+        {
+          "calls": [
+            "send_email"
+          ]
+        },
+        {
+          "calls": [
+            "issue_refund"
+          ]
+        },
+        {
+          "final": "All done."
+        }
+      ],
+      "expected_executed": [
+        "send_email",
+        "issue_refund"
+      ],
+      "expected_gated": [
+        "send_email",
+        "issue_refund"
+      ]
+    },
+    {
+      "name": "send_email then escalate",
+      "request": "Scenario: send_email then escalate.",
+      "turns": [
+        {
+          "calls": [
+            "send_email"
+          ]
+        },
+        {
+          "calls": [
+            "escalate"
+          ]
+        },
+        {
+          "final": "All done."
+        }
+      ],
+      "expected_executed": [
+        "send_email",
+        "escalate"
+      ],
+      "expected_gated": [
+        "send_email",
+        "escalate"
+      ]
+    },
+    {
+      "name": "escalate then search_kb",
+      "request": "Scenario: escalate then search_kb.",
+      "turns": [
+        {
+          "calls": [
+            "escalate"
+          ]
+        },
+        {
+          "calls": [
+            "search_kb"
+          ]
+        },
+        {
+          "final": "All done."
+        }
+      ],
+      "expected_executed": [
+        "escalate",
+        "search_kb"
+      ],
+      "expected_gated": [
+        "escalate"
+      ]
+    },
+    {
+      "name": "escalate then lookup_order",
+      "request": "Scenario: escalate then lookup_order.",
+      "turns": [
+        {
+          "calls": [
+            "escalate"
+          ]
+        },
+        {
+          "calls": [
+            "lookup_order"
+          ]
+        },
+        {
+          "final": "All done."
+        }
+      ],
+      "expected_executed": [
+        "escalate",
+        "lookup_order"
+      ],
+      "expected_gated": [
+        "escalate"
+      ]
+    },
+    {
+      "name": "escalate then issue_refund",
+      "request": "Scenario: escalate then issue_refund.",
+      "turns": [
+        {
+          "calls": [
+            "escalate"
+          ]
+        },
+        {
+          "calls": [
+            "issue_refund"
+          ]
+        },
+        {
+          "final": "All done."
+        }
+      ],
+      "expected_executed": [
+        "escalate",
+        "issue_refund"
+      ],
+      "expected_gated": [
+        "escalate",
+        "issue_refund"
+      ]
+    },
+    {
+      "name": "escalate then send_email",
+      "request": "Scenario: escalate then send_email.",
+      "turns": [
+        {
+          "calls": [
+            "escalate"
+          ]
+        },
+        {
+          "calls": [
+            "send_email"
+          ]
+        },
+        {
+          "final": "All done."
+        }
+      ],
+      "expected_executed": [
+        "escalate",
+        "send_email"
+      ],
+      "expected_gated": [
+        "escalate",
+        "send_email"
+      ]
+    },
+    {
+      "name": "lookup_order and issue_refund in one turn",
+      "request": "Scenario: lookup_order and issue_refund in one turn.",
+      "turns": [
+        {
+          "calls": [
+            "lookup_order",
+            "issue_refund"
+          ]
+        },
+        {
+          "final": "All done."
+        }
+      ],
+      "expected_executed": [
+        "lookup_order",
+        "issue_refund"
+      ],
+      "expected_gated": [
+        "issue_refund"
+      ]
+    },
+    {
+      "name": "search_kb and lookup_order in one turn",
+      "request": "Scenario: search_kb and lookup_order in one turn.",
+      "turns": [
+        {
+          "calls": [
+            "search_kb",
+            "lookup_order"
+          ]
+        },
+        {
+          "final": "All done."
+        }
+      ],
+      "expected_executed": [
+        "search_kb",
+        "lookup_order"
+      ],
+      "expected_gated": []
+    },
+    {
+      "name": "issue_refund and send_email in one turn",
+      "request": "Scenario: issue_refund and send_email in one turn.",
+      "turns": [
+        {
+          "calls": [
+            "issue_refund",
+            "send_email"
+          ]
+        },
+        {
+          "final": "All done."
+        }
+      ],
+      "expected_executed": [
+        "issue_refund",
+        "send_email"
+      ],
+      "expected_gated": [
+        "issue_refund",
+        "send_email"
+      ]
+    },
+    {
+      "name": "lookup_order and send_email in one turn",
+      "request": "Scenario: lookup_order and send_email in one turn.",
+      "turns": [
+        {
+          "calls": [
+            "lookup_order",
+            "send_email"
+          ]
+        },
+        {
+          "final": "All done."
+        }
+      ],
+      "expected_executed": [
+        "lookup_order",
+        "send_email"
+      ],
+      "expected_gated": [
+        "send_email"
+      ]
+    },
+    {
+      "name": "search_kb and escalate in one turn",
+      "request": "Scenario: search_kb and escalate in one turn.",
+      "turns": [
+        {
+          "calls": [
+            "search_kb",
+            "escalate"
+          ]
+        },
+        {
+          "final": "All done."
+        }
+      ],
+      "expected_executed": [
+        "search_kb",
+        "escalate"
+      ],
+      "expected_gated": [
+        "escalate"
+      ]
+    },
+    {
+      "name": "issue_refund and escalate in one turn",
+      "request": "Scenario: issue_refund and escalate in one turn.",
+      "turns": [
+        {
+          "calls": [
+            "issue_refund",
+            "escalate"
+          ]
+        },
+        {
+          "final": "All done."
+        }
+      ],
+      "expected_executed": [
+        "issue_refund",
+        "escalate"
+      ],
+      "expected_gated": [
+        "issue_refund",
+        "escalate"
+      ]
+    },
+    {
+      "name": "lookup_order then issue_refund then send_email",
+      "request": "Scenario: lookup_order then issue_refund then send_email.",
+      "turns": [
+        {
+          "calls": [
+            "lookup_order"
+          ]
+        },
+        {
+          "calls": [
+            "issue_refund"
+          ]
+        },
+        {
+          "calls": [
+            "send_email"
+          ]
+        },
+        {
+          "final": "All done."
+        }
+      ],
+      "expected_executed": [
+        "lookup_order",
+        "issue_refund",
+        "send_email"
+      ],
+      "expected_gated": [
+        "issue_refund",
+        "send_email"
+      ]
+    },
+    {
+      "name": "search_kb then lookup_order then escalate",
+      "request": "Scenario: search_kb then lookup_order then escalate.",
+      "turns": [
+        {
+          "calls": [
+            "search_kb"
+          ]
+        },
+        {
+          "calls": [
+            "lookup_order"
+          ]
+        },
+        {
+          "calls": [
+            "escalate"
+          ]
+        },
+        {
+          "final": "All done."
+        }
+      ],
+      "expected_executed": [
+        "search_kb",
+        "lookup_order",
+        "escalate"
+      ],
+      "expected_gated": [
+        "escalate"
+      ]
+    },
+    {
+      "name": "issue_refund then send_email then escalate",
+      "request": "Scenario: issue_refund then send_email then escalate.",
+      "turns": [
+        {
+          "calls": [
+            "issue_refund"
+          ]
+        },
+        {
+          "calls": [
+            "send_email"
+          ]
+        },
+        {
+          "calls": [
+            "escalate"
+          ]
+        },
+        {
+          "final": "All done."
+        }
+      ],
+      "expected_executed": [
+        "issue_refund",
+        "send_email",
+        "escalate"
+      ],
+      "expected_gated": [
+        "issue_refund",
+        "send_email",
+        "escalate"
+      ]
+    },
+    {
+      "name": "search_kb then issue_refund then lookup_order",
+      "request": "Scenario: search_kb then issue_refund then lookup_order.",
+      "turns": [
+        {
+          "calls": [
+            "search_kb"
+          ]
+        },
+        {
+          "calls": [
+            "issue_refund"
+          ]
+        },
+        {
+          "calls": [
+            "lookup_order"
+          ]
+        },
+        {
+          "final": "All done."
+        }
+      ],
+      "expected_executed": [
+        "search_kb",
+        "issue_refund",
+        "lookup_order"
+      ],
+      "expected_gated": [
+        "issue_refund"
+      ]
+    },
+    {
+      "name": "lookup_order then issue_refund then issue_refund",
+      "request": "Scenario: lookup_order then issue_refund then issue_refund.",
+      "turns": [
+        {
+          "calls": [
+            "lookup_order"
+          ]
+        },
+        {
+          "calls": [
+            "issue_refund"
+          ]
+        },
+        {
+          "calls": [
+            "issue_refund"
+          ]
+        },
+        {
+          "final": "All done."
+        }
+      ],
+      "expected_executed": [
+        "lookup_order",
+        "issue_refund",
+        "issue_refund"
+      ],
+      "expected_gated": [
+        "issue_refund",
+        "issue_refund"
+      ]
+    }
+  ]
+}

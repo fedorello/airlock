@@ -48,7 +48,7 @@ files = ["src", "tests", "examples"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
-testpaths = ["tests/unit"]
+testpaths = ["tests/unit", "tests/eval"]
 addopts = "--cov=airlock --cov-report=term-missing --cov-branch --cov-fail-under=90"
 
 [tool.coverage.run]
