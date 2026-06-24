@@ -1,0 +1,27 @@
+# Builds the Airlock approver dashboard into a standalone Next.js server. Build
+# context is the repo root.
+FROM node:24-alpine AS builder
+
+WORKDIR /app
+RUN corepack enable
+
+# Install dependencies first for layer caching. pnpm-workspace.yaml carries the
+# build-script approvals (sharp, esbuild, unrs-resolver).
+COPY apps/ui/package.json apps/ui/pnpm-lock.yaml apps/ui/pnpm-workspace.yaml ./
+RUN pnpm install --frozen-lockfile
+
+COPY apps/ui/ ./
+RUN pnpm build
+
+FROM node:24-alpine AS runner
+
+WORKDIR /app
+ENV NODE_ENV=production
+ENV PORT=3000
+ENV HOSTNAME=0.0.0.0
+
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+
+EXPOSE 3000
+CMD ["node", "server.js"]

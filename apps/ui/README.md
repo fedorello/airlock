@@ -20,7 +20,21 @@ Vitest + Testing Library + Playwright. Versions are pinned in `package.json`; th
 TypeScript and ESLint versions track what Next 16's toolchain is validated against
 (TS 5.9, ESLint 9) to keep the build warning-free.
 
-## Run it
+## Live demo
+
+From the repo root, one command brings up Redis, an agent that raises sensitive
+actions, and the dashboard:
+
+```bash
+make up-ui        # then open http://localhost:3000
+make down         # stop and clean up
+```
+
+Approve an action in the UI and the agent resumes and runs it; reject it and it
+never runs. To run the pieces locally instead (three terminals): `make ui-agent`,
+`make ui-dev`, and a Redis on `AIRLOCK_REDIS_URL`.
+
+## Run it (dev)
 
 ```bash
 pnpm install

@@ -30,3 +30,28 @@ services:
     depends_on:
       redis:
         condition: service_healthy
+
+  # The approver dashboard demo: an agent that raises sensitive actions and pauses
+  # at the gate, plus the web UI where a human approves them. Open http://localhost:3000.
+  ui-agent:
+    build:
+      context: ../..
+      dockerfile: deploy/docker/Dockerfile
+    command: ["pnpm", "demo:ui-agent"]
+    environment:
+      AIRLOCK_REDIS_URL: "redis://redis:6379"
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  ui:
+    build:
+      context: ../..
+      dockerfile: deploy/docker/Dockerfile.ui
+    environment:
+      AIRLOCK_REDIS_URL: "redis://redis:6379"
+    ports:
+      - "3000:3000"
+    depends_on:
+      redis:
+        condition: service_healthy

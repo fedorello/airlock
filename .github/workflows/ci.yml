@@ -77,6 +77,44 @@ jobs:
         env:
           AIRLOCK_REDIS_URL: redis://localhost:6379
 
+  ui:
+    name: UI gate
+    runs-on: ubuntu-latest
+    services:
+      redis:
+        image: redis:8.8-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 2s
+          --health-timeout 3s
+          --health-retries 10
+    defaults:
+      run:
+        working-directory: apps/ui
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.9.0
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: apps/ui/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck
+      - run: pnpm lint
+      - run: pnpm fmt:check
+      - run: pnpm test:cov
+      - run: pnpm build
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm test:e2e
+        env:
+          AIRLOCK_REDIS_URL: redis://localhost:6379
+          AIRLOCK_LOG_LEVEL: fatal
+
   commitlint:
     name: Commit messages
     runs-on: ubuntu-latest

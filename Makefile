@@ -2,11 +2,13 @@
 
 TS := packages/ts
 PY := packages/py
+UI := apps/ui
 COMPOSE := deploy/docker/docker-compose.yml
 
 .PHONY: help install hooks check check-all demo up down \
         ts-install ts-check ts-test-integration ts-demo \
-        py-install py-check py-test-integration py-demo up-py
+        py-install py-check py-test-integration py-demo up-py \
+        ui-install ui-check ui-dev ui-agent ui-e2e up-ui
 
 help:
 	@echo "Airlock — make targets:"
@@ -22,15 +24,22 @@ help:
 	@echo "    py-test-integration   Redis integration tests (needs Redis)"
 	@echo "    py-demo               run the in-memory support-agent demo"
 	@echo "    up-py                 Redis + the Python demo via Docker Compose"
-	@echo "  Both:"
-	@echo "    check-all             run both language gates"
+	@echo "  UI (approver dashboard):"
+	@echo "    ui-install            install dependencies"
+	@echo "    ui-check              full gate: typecheck + lint + format + tests + build"
+	@echo "    ui-dev                run the dashboard dev server (needs ui-agent + Redis)"
+	@echo "    ui-agent              run the agent that raises approvals (needs Redis)"
+	@echo "    ui-e2e                run the Playwright end-to-end test (needs Redis)"
+	@echo "    up-ui                 Redis + agent + dashboard via Docker Compose (localhost:3000)"
+	@echo "  Both / all:"
+	@echo "    check-all             run all language gates"
 	@echo "    hooks                 install the commit-msg hook (commitlint)"
 	@echo "    down                  stop and remove the Docker Compose stack"
 
-install: ts-install py-install
+install: ts-install py-install ui-install
 check: ts-check
 demo: ts-demo
-check-all: ts-check py-check
+check-all: ts-check py-check ui-check
 
 hooks:
 	npm install
@@ -67,6 +76,24 @@ py-demo:
 
 up-py:
 	docker compose -f $(COMPOSE) up --build --abort-on-container-exit --exit-code-from demo-py redis demo-py
+
+ui-install:
+	cd $(UI) && pnpm install
+
+ui-check:
+	cd $(UI) && pnpm typecheck && pnpm lint && pnpm fmt:check && pnpm test:cov && pnpm build
+
+ui-dev:
+	cd $(UI) && pnpm dev
+
+ui-agent:
+	cd $(TS) && pnpm demo:ui-agent
+
+ui-e2e:
+	cd $(UI) && pnpm exec playwright install chromium && pnpm test:e2e
+
+up-ui:
+	docker compose -f $(COMPOSE) up --build redis ui-agent ui
 
 down:
 	docker compose -f $(COMPOSE) down -v

@@ -51,7 +51,8 @@
     "test:cov": "vitest run --coverage",
     "test:integration": "vitest run --config vitest.integration.config.ts",
     "demo": "tsx examples/support-agent/in-memory-demo.ts",
-    "demo:redis": "tsx examples/support-agent/redis-demo.ts"
+    "demo:redis": "tsx examples/support-agent/redis-demo.ts",
+    "demo:ui-agent": "tsx examples/support-agent/ui-agent.ts"
   },
   "dependencies": {
     "ioredis": "^5.11.1",
