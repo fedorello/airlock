@@ -180,6 +180,28 @@ See the [full architecture, with diagrams](./docs/architecture/overview.md), the
 [language-neutral contract](./docs/design/contracts.md), and the
 [decision records](./docs/adr/).
 
+## Does it actually work?
+
+Yes — and we proved it end to end, against the real package, in both languages, on a
+real Redis. The highlights:
+
+- **The gate holds under attack.** A fully compromised model reads a poisoned ticket
+  and _obeys_ it, trying to wire **$1,000,000** to an attacker. The gate pauses it,
+  the human rejects it, **$0 moves** — and the attempt is logged.
+- **Resume survives a process dying.** Across three separate OS processes sharing
+  only Redis: one starts a run and exits at the gate, a **different** process resumes
+  it after a **separate** approver approves — the dangerous action runs only then.
+- **The human stays in control.** Approve, **edit** (a $10,000 refund becomes $50),
+  and reject all work end to end.
+- **A solid floor.** TypeScript 84 tests, Python 74 tests, Redis integration tests on
+  a real instance, a 36-case agent eval suite in both languages, and green CI.
+
+The takeaway: the safety property is enforced by the **architecture, not a prompt**.
+
+📄 **Read the full story — the problem, the build, and the proof with log excerpts:
+[`docs/reports/project-report.md`](./docs/reports/project-report.md)** (and the
+[end-to-end verification](./docs/reports/e2e-verification.md)).
+
 ## Status
 
 **v0.1.0** — complete and tested in both languages: the agent loop and gate,
