@@ -1,0 +1,13 @@
+{
+  "name": "airlock-tools",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Repo-level tooling (commit-message linting). Not published; the packages live under packages/.",
+  "scripts": {
+    "commitlint": "commitlint"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^21.1.0",
+    "@commitlint/config-conventional": "^21.1.0"
+  }
+}

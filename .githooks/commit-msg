@@ -1,0 +1,4 @@
+#!/bin/sh
+# Validate the commit message against Conventional Commits (CODING_PRINCIPLES §13).
+# Activate with `make hooks` (sets core.hooksPath and installs commitlint).
+npx --no-install commitlint --edit "$1"

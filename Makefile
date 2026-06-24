@@ -4,7 +4,7 @@ TS := packages/ts
 PY := packages/py
 COMPOSE := deploy/docker/docker-compose.yml
 
-.PHONY: help install check check-all demo up down \
+.PHONY: help install hooks check check-all demo up down \
         ts-install ts-check ts-test-integration ts-demo \
         py-install py-check py-test-integration py-demo up-py
 
@@ -24,12 +24,18 @@ help:
 	@echo "    up-py                 Redis + the Python demo via Docker Compose"
 	@echo "  Both:"
 	@echo "    check-all             run both language gates"
+	@echo "    hooks                 install the commit-msg hook (commitlint)"
 	@echo "    down                  stop and remove the Docker Compose stack"
 
 install: ts-install py-install
 check: ts-check
 demo: ts-demo
 check-all: ts-check py-check
+
+hooks:
+	npm install
+	git config core.hooksPath .githooks
+	@echo "commit-msg hook installed (commitlint enforces Conventional Commits)."
 
 ts-install:
 	cd $(TS) && pnpm install
