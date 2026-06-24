@@ -1,6 +1,7 @@
 import { getContainer } from "@/core/container";
 import type { PendingApproval } from "@/domain/pending-approval";
 import { ApprovalsBoard } from "@/features/approvals/components/approvals-board";
+import { Explainer } from "@/features/approvals/components/explainer";
 
 export const dynamic = "force-dynamic";
 
@@ -20,6 +21,7 @@ export default async function ApprovalsPage() {
   const initialApprovals = await loadInitialApprovals();
   return (
     <div className="flex flex-col gap-4">
+      <Explainer />
       <h1 className="text-lg font-semibold">Pending approvals</h1>
       <ApprovalsBoard initialApprovals={initialApprovals} />
     </div>
