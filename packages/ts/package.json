@@ -33,6 +33,9 @@
       "esbuild"
     ]
   },
+  "dependencies": {
+    "zod": "^4.4.3"
+  },
   "devDependencies": {
     "@types/node": "^24.13.2",
     "@vitest/coverage-v8": "^4.1.9",

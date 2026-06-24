@@ -81,3 +81,5 @@ for the layout). Keep this index in sync — when you add a document, add it her
     — one normalized `LlmProvider` port, one adapter per vendor.
   - [`0006-dual-language-parity-monorepo.md`](./docs/adr/0006-dual-language-parity-monorepo.md)
     — TypeScript + Python parity in a single monorepo.
+  - [`0007-provider-adapters-call-http-directly.md`](./docs/adr/0007-provider-adapters-call-http-directly.md)
+    — provider adapters call the HTTP APIs over an injected `fetch` (no SDKs).

@@ -117,12 +117,12 @@ Deliverables:
       + `EventSubscriber` (ioredis). At-most-once semantics per ADR-0002; run
       state in the store is the source of truth.
 - [ ] `infrastructure/store/redis-run-store.ts` — `RunStore` on Redis.
-- [ ] `infrastructure/providers/anthropic-provider.ts` — `LlmProvider` (Claude).
-- [ ] `infrastructure/providers/openai-provider.ts` — `LlmProvider` for OpenAI and
+- [x] `infrastructure/providers/anthropic-provider.ts` — `LlmProvider` (Claude).
+- [x] `infrastructure/providers/openai-provider.ts` — `LlmProvider` for OpenAI and
       any OpenAI-compatible endpoint (OpenRouter, Ollama) via a configurable base
       URL (ADR-0005).
-- [ ] `infrastructure/audit/jsonl-audit-sink.ts` and `stdout-audit-sink.ts`.
-- [ ] `core/settings.ts` — typed configuration read from the environment in one
+- [x] `infrastructure/audit/jsonl-audit-sink.ts` and `stdout-audit-sink.ts`.
+- [x] `core/settings.ts` — typed configuration read from the environment in one
       place (no scattered `process.env`); model id, base URLs, Redis URL, etc.
 - [ ] Validation of tool inputs and event payloads with `zod` at the adapter edges.
 
@@ -130,7 +130,7 @@ Tests:
 
 - [ ] Integration tests for the Redis adapters against a real Redis (Testcontainers
       or a Compose service), per CODING_PRINCIPLES §10.4.
-- [ ] Provider adapters tested against recorded responses (no live calls in CI).
+- [x] Provider adapters tested against recorded responses (no live calls in CI).
 
 Done when: integration tests pass; the loop runs end to end on Redis with a real
 or recorded provider; gates green.

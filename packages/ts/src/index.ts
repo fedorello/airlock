@@ -20,11 +20,17 @@ export * from "./application/ports/gate-policy";
 export * from "./application/gate-policy";
 export * from "./application/agent";
 
+export * from "./core/settings";
+
 export * from "./infrastructure/clock/system-clock";
 export * from "./infrastructure/clock/fixed-clock";
 export * from "./infrastructure/ids/uuid-id-generator";
 export * from "./infrastructure/ids/sequential-id-generator";
 export * from "./infrastructure/audit/in-memory-audit-sink";
+export * from "./infrastructure/audit/line-audit-sink";
 export * from "./infrastructure/store/in-memory-run-store";
 export * from "./infrastructure/events/in-memory-event-bus";
 export * from "./infrastructure/providers/fake-llm-provider";
+export * from "./infrastructure/providers/http";
+export * from "./infrastructure/providers/anthropic-provider";
+export * from "./infrastructure/providers/openai-provider";
