@@ -1,14 +1,27 @@
-import { Inbox } from "lucide-react";
+import { getContainer } from "@/core/container";
+import type { PendingApproval } from "@/domain/pending-approval";
+import { ApprovalsBoard } from "@/features/approvals/components/approvals-board";
 
-export default function ApprovalsPage() {
+export const dynamic = "force-dynamic";
+
+/** Server-render the current queue from the durable store, then hand it to the
+ * client board which keeps it live over SSE. */
+async function loadInitialApprovals(): Promise<PendingApproval[]> {
+  const { reader, logger } = getContainer();
+  try {
+    return await reader.listPending();
+  } catch (error) {
+    logger.error("failed to load initial approvals", { error: String(error) });
+    return [];
+  }
+}
+
+export default async function ApprovalsPage() {
+  const initialApprovals = await loadInitialApprovals();
   return (
-    <div className="border-border flex flex-col items-center justify-center gap-3 rounded-lg border border-dashed py-20 text-center">
-      <Inbox className="text-muted-foreground size-10" aria-hidden />
-      <h1 className="text-lg font-medium">No actions waiting</h1>
-      <p className="text-muted-foreground max-w-sm text-sm">
-        When an agent reaches a sensitive action, it appears here for you to
-        approve, edit, or reject.
-      </p>
+    <div className="flex flex-col gap-4">
+      <h1 className="text-lg font-semibold">Pending approvals</h1>
+      <ApprovalsBoard initialApprovals={initialApprovals} />
     </div>
   );
 }

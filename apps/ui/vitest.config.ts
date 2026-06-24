@@ -24,6 +24,7 @@ export default defineConfig({
         // Composition root and thin wiring (covered via integration / e2e).
         "src/app/**",
         "src/core/container.ts",
+        "src/features/approvals/components/approvals-board.tsx",
         // Redis adapters are covered by integration tests against a real Redis.
         "src/infrastructure/redis/**",
       ],
