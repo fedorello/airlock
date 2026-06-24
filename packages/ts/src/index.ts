@@ -1,5 +1,5 @@
-// Public API surface. Domain types and ports; adapters and the Agent use case
-// are exported as they are added.
+// Public API surface: domain types, ports, the Agent use case, and the
+// in-memory / fake adapters. Real adapters (Redis, providers) are added later.
 
 export * from "./domain/identifiers";
 export * from "./domain/tool";
@@ -17,3 +17,14 @@ export * from "./application/ports/event-bus";
 export * from "./application/ports/run-store";
 export * from "./application/ports/audit-sink";
 export * from "./application/ports/gate-policy";
+export * from "./application/gate-policy";
+export * from "./application/agent";
+
+export * from "./infrastructure/clock/system-clock";
+export * from "./infrastructure/clock/fixed-clock";
+export * from "./infrastructure/ids/uuid-id-generator";
+export * from "./infrastructure/ids/sequential-id-generator";
+export * from "./infrastructure/audit/in-memory-audit-sink";
+export * from "./infrastructure/store/in-memory-run-store";
+export * from "./infrastructure/events/in-memory-event-bus";
+export * from "./infrastructure/providers/fake-llm-provider";

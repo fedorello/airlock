@@ -41,7 +41,7 @@ strings). They are produced only by the `IdGenerator` port.
 | `RunStore` | `save(state)`, `load(runId) -> state \| null` |
 | `AuditSink` | `record(event)` |
 | `Clock` | `now() -> instant` (UTC) |
-| `IdGenerator` | `runId()`, `requestId()`, `toolCallId()` |
+| `IdGenerator` | `runId()`, `requestId()` (tool-call ids come from the model) |
 | `GatePolicy` | `requiresApproval({ tool, toolCall, state }) -> boolean` |
 
 `EventPublisher` and `EventSubscriber` are separate (Interface Segregation): the

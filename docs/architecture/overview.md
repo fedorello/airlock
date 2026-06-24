@@ -120,8 +120,9 @@ The core depends on these interfaces and nothing else.
 - **`RunStore`** — `save(runState)` and `load(runId)`. Enables pause/resume and
   multi-process operation.
 - **`AuditSink`** — `record(auditEvent)`. Append-only.
-- **`Clock`** and **`Ids`** — injected time and identifiers, so the core is
-  deterministic and testable (no ambient `now()` or random in the core).
+- **`Clock`** and **`IdGenerator`** — injected time (`now()`) and the identifiers
+  the agent mints (`runId()`, `requestId()`; tool-call ids come from the model), so
+  the core is deterministic and testable (no ambient `now()` or random in the core).
 
 ---
 
