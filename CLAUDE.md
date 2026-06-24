@@ -67,6 +67,8 @@ for the layout). Keep this index in sync — when you add a document, add it her
 - [`docs/plans/implementation-plan.md`](./docs/plans/implementation-plan.md) — the
   phased implementation roadmap with a status snapshot and per-phase Definition of
   Done.
+- [`docs/plans/ui-implementation-plan.md`](./docs/plans/ui-implementation-plan.md) —
+  the UI/UX plan for the `apps/ui` approver dashboard (stack, screens, API, phases).
 - [`docs/reports/phase-1-report.md`](./docs/reports/phase-1-report.md) — Phase 1
   (agent loop + fakes + tests) implementation report.
 - [`docs/reports/phase-2-report.md`](./docs/reports/phase-2-report.md) — Phase 2
