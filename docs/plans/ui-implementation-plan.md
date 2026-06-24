@@ -10,8 +10,8 @@ reads the run store. Proving that decoupling is half the point of building it.
 
 | Phase | Scope | Status |
 | --- | --- | --- |
-| U0 | Scaffold: Next.js + Tailwind v4 + shadcn, theme, gates | ⬜ Next |
-| U1 | Redis bridge + API (list pending, decide, live stream) | ⬜ |
+| U0 | Scaffold: Next.js + Tailwind v4 + shadcn, theme, gates | ✅ Done |
+| U1 | Redis bridge + API (list pending, decide, live stream) | ⬜ Next |
 | U2 | Approvals dashboard: cards, badges, approve / reject | ⬜ |
 | U3 | Edit flow, reject-with-reason, run detail / audit timeline | ⬜ |
 | U4 | Polish: empty states, toasts, motion, dark mode, a11y, responsive | ⬜ |
@@ -65,11 +65,11 @@ manager **pnpm 11.9.0**, runtime **Node 24** (to match the rest of the monorepo)
 | `next` | 16.2.9 | App Router framework (RSC + Route Handlers). |
 | `react` / `react-dom` | 19.2.7 | UI runtime. |
 | `tailwindcss` + `@tailwindcss/postcss` | 4.3.1 | Styling (Tailwind v4 engine). |
-| `typescript` | 6.0.3 | Language (matches `packages/ts`). |
+| `typescript` | 5.9.3 | Language (tracks Next 16's validated toolchain). |
 | `@types/node` | 24.13.2 | Node 24 typings (matches the runtime, not the newest 26.x). |
 | `@types/react` | 19.2.17 | React typings. |
 | `@types/react-dom` | 19.2.3 | React DOM typings. |
-| `eslint` | 10.5.0 | Linting. |
+| `eslint` | 9.39.4 | Linting (tracks `eslint-config-next`). |
 | `eslint-config-next` | 16.2.9 | Next.js lint rules. |
 | `prettier` | 3.8.4 | Formatting. |
 | `prettier-plugin-tailwindcss` | 0.8.0 | Sort Tailwind classes. |

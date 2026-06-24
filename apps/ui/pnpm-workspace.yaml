@@ -1,0 +1,7 @@
+# pnpm 11 reads build-script approvals from here. These dependencies need their
+# install scripts: sharp (image optimization), unrs-resolver (eslint resolver),
+# esbuild (Vitest).
+allowBuilds:
+  sharp: true
+  unrs-resolver: true
+  esbuild: true

@@ -1,37 +1,50 @@
 # Airlock UI (approver dashboard)
 
 A web dashboard where a human reviews the sensitive actions an Airlock agent wants
-to take and **approves**, **edits**, or **rejects** them — beautifully.
+to take and **approves**, **edits**, or **rejects** them.
 
-> **Status: planned.** This folder holds the design; the app is scaffolded per the
-> [UI/UX implementation plan](../../docs/plans/ui-implementation-plan.md). It is, by
-> design, **just another approver adapter** — it speaks the same two events over
-> Redis (`approval.requested` / `approval.decided`) and reads the run store, so it
-> touches no Airlock core code and reuses the `airlock` TypeScript package.
+It is, by design, **just another approver adapter**: it speaks the same two events
+over Redis (`approval.requested` / `approval.decided`) and reads the run store, so
+it touches no Airlock core code. To keep the app independently deployable, the UI
+re-declares the small, stable event contract (channel names, key prefix, JSON
+shapes — see [`docs/design/contracts.md`](../../docs/design/contracts.md)) rather
+than taking a build dependency on the `airlock` package.
 
-## Stack (pinned, verified 2026-06-24)
+> **Status:** scaffolded (phase U0). Built per the
+> [UI/UX implementation plan](../../docs/plans/ui-implementation-plan.md).
 
-Next.js App Router + React 19 + Tailwind CSS v4 + shadcn/ui, on Node 24 / pnpm.
+## Stack
 
-| Package | Version |
-| --- | --- |
-| `next` | 16.2.9 |
-| `react` / `react-dom` | 19.2.7 |
-| `tailwindcss` + `@tailwindcss/postcss` | 4.3.1 |
-| `typescript` | 6.0.3 |
-| `@types/node` | 24.13.2 |
-| `@types/react` / `@types/react-dom` | 19.2.17 / 19.2.3 |
-| `eslint` / `eslint-config-next` | 10.5.0 / 16.2.9 |
-| `prettier` / `prettier-plugin-tailwindcss` | 3.8.4 / 0.8.0 |
-| `lucide-react` | 1.21.0 |
-| `clsx` / `tailwind-merge` / `class-variance-authority` | 2.1.1 / 3.6.0 / 0.7.1 |
-| `zod` | 4.4.3 |
-| `ioredis` | 5.11.1 |
-| `airlock` (workspace) | 0.1.0 |
-| `@tanstack/react-query` _(optional)_ | 5.101.1 |
+Next.js 16 (App Router) · React 19 · Tailwind CSS v4 · TypeScript · pino logging ·
+Vitest + Testing Library + Playwright. Versions are pinned in `package.json`; the
+TypeScript and ESLint versions track what Next 16's toolchain is validated against
+(TS 5.9, ESLint 9) to keep the build warning-free.
 
-UI components come from [shadcn/ui](https://ui.shadcn.com/) (Radix primitives +
-Tailwind), generated via its CLI.
+## Run it
 
-See the full design, screens, API, and phases in the
-[UI/UX implementation plan](../../docs/plans/ui-implementation-plan.md).
+```bash
+pnpm install
+pnpm dev          # http://localhost:3000
+```
+
+| Command                       | What it does                                   |
+| ----------------------------- | ---------------------------------------------- |
+| `pnpm typecheck`              | `tsc --noEmit`                                 |
+| `pnpm lint`                   | ESLint (Next core-web-vitals + TypeScript)     |
+| `pnpm fmt` / `pnpm fmt:check` | Prettier (+ Tailwind class sorting)            |
+| `pnpm test` / `pnpm test:cov` | Vitest unit + component tests (coverage ≥ 90%) |
+| `pnpm test:e2e`               | Playwright end-to-end (added in phase U5)      |
+| `pnpm build`                  | production build                               |
+
+## Structure
+
+```
+src/
+  app/        # Next.js App Router: layout, pages, and (later) Route Handlers
+  core/       # injectable cross-cutting ports: Settings, Logger, Clock
+  shared/     # ui/ (presentational primitives) + lib/ (helpers)
+  features/   # self-contained feature modules (the approvals queue, U1+)
+```
+
+See the [UI/UX implementation plan](../../docs/plans/ui-implementation-plan.md) for
+the full design, screens, API, and phases.
