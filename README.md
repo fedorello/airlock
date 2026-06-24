@@ -182,10 +182,12 @@ See the [full architecture, with diagrams](./docs/architecture/overview.md), the
 
 ## Status
 
-Early and evolving. Built in the open as a demonstration of the approach. See
-[`CLAUDE.md`](./CLAUDE.md) for the project rules and
-[`CODING_PRINCIPLES.md`](./CODING_PRINCIPLES.md) for the engineering standard it
-holds itself to.
+**v0.1.0** — complete and tested in both languages: the agent loop and gate,
+providers, Redis adapters, the runnable example, CI, and an eval suite. Built in
+the open as a demonstration of the approach. See the
+[changelog](./CHANGELOG.md), [`CONTRIBUTING.md`](./CONTRIBUTING.md), the project
+rules in [`CLAUDE.md`](./CLAUDE.md), and the engineering standard it holds itself
+to in [`CODING_PRINCIPLES.md`](./CODING_PRINCIPLES.md).
 
 ## License
 

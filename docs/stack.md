@@ -44,17 +44,23 @@ Package manager: **pnpm 11.9.0**.
 | `eslint` | 10.5.0 | Linting. |
 | `typescript-eslint` | 8.62.0 | TypeScript lint rules / parser. |
 | `prettier` | 3.8.4 | Formatting. |
+| `tsx` | 4.22.4 | Run the TypeScript examples / demos directly (no build step). |
 | `@types/node` | 24.13.2 | Node typings — pinned to the Node 24 LTS major. |
+
+The ESLint config also carries a hexagonal import-boundary rule
+(`no-restricted-imports`) that fails the lint step on an inward-pointing
+violation.
 
 ---
 
 ## Python package (`packages/py`)
 
-Package / environment manager: **uv 0.11.24**. Build backend: **hatchling 1.30.1**.
+Package / environment manager: **uv 0.11.8**. Build backend: **hatchling 1.30.1**.
 
 | Dependency | Version | Purpose |
 | --- | --- | --- |
 | `pydantic` | 2.13.4 | Schemas and validation for tool inputs, events, and run state. |
+| `pydantic-settings` | 2.14.2 | Typed configuration from environment variables (`Settings`). |
 | `redis` | 8.0.1 | redis-py (async) — Pub/Sub event-bus adapter and Redis run-store adapter. |
 | `httpx` | 0.28.1 | Async HTTP client for the provider adapters (no vendor SDKs; ADR-0007). |
 | `pytest` | 9.1.1 | Test runner. |
@@ -62,6 +68,7 @@ Package / environment manager: **uv 0.11.24**. Build backend: **hatchling 1.30.1
 | `pytest-cov` | 7.1.0 | Coverage. |
 | `ruff` | 0.15.19 | Linting and formatting. |
 | `mypy` | 2.1.0 | Static type checking. |
+| `import-linter` | 2.12 | Enforce the hexagonal import boundaries (CI). |
 
 ---
 
@@ -72,8 +79,8 @@ Used by Docker Compose (see the deployment topology in
 
 | Image | Tag | Use |
 | --- | --- | --- |
-| `node` | `24-alpine` | TypeScript runner / approver services. |
-| `python` | `3.14-slim` | Python runner / approver services. |
+| `node` | `24-alpine` | TypeScript demo service. |
+| `ghcr.io/astral-sh/uv` | `python3.14-bookworm-slim` | Python demo service (uv + Python 3.14). |
 | `redis` | `8.8-alpine` | Event bus (Pub/Sub) and run store. |
 
 Compose uses the Compose Specification (Docker Compose v2, shipped with Docker
@@ -91,11 +98,22 @@ core. See [`architecture/overview.md`](./architecture/overview.md).
 - **`RunStore` port** → the same Redis client for the Redis adapter; in-memory
   adapter has none.
 - **`LlmProvider` port** → the Anthropic and OpenAI adapters call the vendors'
-  HTTP APIs directly over an injected `fetch` (no vendor SDKs; see ADR-0007),
-  validating responses with `zod`; the `Fake` adapter has no dependencies.
+  HTTP APIs directly over an injected `fetch` (TS) / `httpx` client (Python) — no
+  vendor SDKs (see ADR-0007) — validating responses with `zod` / `pydantic`; the
+  `Fake` adapter has no dependencies.
 - **Domain schemas / validation** → `zod` (TS) / `pydantic` (Python).
 - **Tests** → `vitest` / `pytest`, run entirely against the `Fake` provider and
   the in-memory bus and store — no network, no Redis, no API keys.
+
+---
+
+## CI and supply chain
+
+GitHub Actions runs both packages' full gates on every push and PR.
+**commitlint** (`@commitlint/config-conventional`) enforces Conventional Commits;
+hexagonal imports are enforced by the ESLint boundary rule and `import-linter`;
+and **Trivy** scans the lockfiles, failing the build on a HIGH/CRITICAL CVE
+(CODING_PRINCIPLES §7.10).
 
 ---
 

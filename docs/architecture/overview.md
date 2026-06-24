@@ -305,21 +305,23 @@ packages/
   ts/  src/
     domain/          # pure entities & value objects (Tool, RiskTier, RunState…)
     application/     # use-cases (agent loop, gate policy) + ports/
-    infrastructure/  # adapters: providers/, events/, store/, audit/
-    interface/       # driving adapters: runner, approver/ (cli, http)
+    core/            # Settings (typed configuration)
+    infrastructure/  # adapters: providers/, events/, store/, audit/, clock, ids
+    interface/       # driving adapters: runner, approver/ (cli, auto-approve)
     index.ts
-  py/  src/airlock/
-    domain/
-    application/     # + ports/
-    infrastructure/
-    interface/
+  py/  src/airlock/  # same layers: domain, application/ports, core,
+                     # infrastructure, interface
+evals/               # language-neutral golden dataset for the agent eval suite
+deploy/docker/       # Dockerfile(s) + docker-compose for the demos
+.github/workflows/   # CI: both gates, commitlint, dependency scan
 ```
 
 - `domain` is innermost and depends on nothing.
 - `application` depends on `domain` and defines the ports.
 - `infrastructure` and `interface` depend inward and implement/consume the ports.
 - The dependency rule points one way only: **outward layers depend on inward
-  layers, never the reverse.**
+  layers, never the reverse.** It is enforced in CI by ESLint's boundary rule
+  (TypeScript) and import-linter (Python).
 
 ---
 
@@ -360,6 +362,12 @@ Tests assert the invariants directly: safe tools auto-execute; a sensitive call
 suspends and emits `approval.requested`; `approve` executes the handler exactly
 once; `reject` feeds back without executing; and a run reloaded from the store
 resumes correctly.
+
+The Redis adapters are covered by integration tests against a real Redis. On top
+of the unit tests, an **agent eval suite** runs a language-neutral golden dataset
+(`evals/support-agent/`) through the wired agent in both languages, asserting the
+gate fires on every sensitive tool call and never on a safe one, with the correct
+execution sequence.
 
 ---
 

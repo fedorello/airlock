@@ -39,7 +39,7 @@ the [ADRs](../adr/), and the [pinned stack](../stack.md), and it holds itself to
 | 3 | TypeScript interface — runner, approver, Compose, Makefile, example | ✅ Done |
 | 4 | Python parity — core → infrastructure → interface | ✅ Done |
 | 5 | CI/CD, enforcement, and agent evals | ✅ Done |
-| 6 | Polish & release readiness | ⬜ Next |
+| 6 | Polish & release readiness | ✅ Done |
 
 ---
 
@@ -223,12 +223,12 @@ Aligns with: CODING_PRINCIPLES §10.6, §13 (commitlint), §7.10 (SCA), §9.2.
 
 Goal: a repository that reads as a finished, trustworthy code sample.
 
-- [ ] README quickstart: the "gate a dangerous action in ~20 lines" example for
+- [x] README quickstart: the "gate a dangerous action in ~20 lines" example for
       both languages, plus a short architecture diagram link.
-- [ ] Per-package READMEs and the example's README.
-- [ ] Versioning and changelog conventions; package metadata ready for publish
+- [x] Per-package READMEs and the example's README.
+- [x] Versioning and changelog conventions; package metadata ready for publish
       (publishing itself is optional).
-- [ ] A final consistency pass across docs, ADRs, and code.
+- [x] A final consistency pass across docs, ADRs, and code.
 
 ---
 
