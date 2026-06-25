@@ -1,6 +1,9 @@
 # Airlock
 
 [![CI](https://github.com/fedorello/airlock/actions/workflows/ci.yml/badge.svg)](https://github.com/fedorello/airlock/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/@fedorello/airlock?logo=npm&label=npm)](https://www.npmjs.com/package/@fedorello/airlock)
+[![PyPI](https://img.shields.io/pypi/v/airlock-hitl?logo=pypi&logoColor=white&label=PyPI)](https://pypi.org/project/airlock-hitl/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
 **A human-approval gate that stops a hijacked or mistaken AI agent from doing
 damage.**
