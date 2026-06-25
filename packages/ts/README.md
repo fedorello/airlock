@@ -109,4 +109,4 @@ without adopting a framework, that's this.
 
 ## License
 
-[MIT](./LICENSE)
+[MIT](https://github.com/fedorello/airlock/blob/main/LICENSE)

@@ -1,6 +1,6 @@
 [project]
 name = "airlock-hitl"
-version = "0.1.0"
+version = "0.1.1"
 description = "A human-approval gate for the dangerous things an AI agent does."
 readme = "README.md"
 requires-python = ">=3.13"

@@ -7,6 +7,15 @@ share this changelog and version in lockstep.
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-06-25
+
+### Fixed
+
+- Package READMEs now use absolute GitHub links so they render correctly on npm
+  and PyPI — the relative links (`../../README.md`, `./examples/...`) were broken
+  on the registry pages. The PyPI page also gained a self-contained quickstart
+  instead of a "see the root README" pointer.
+
 ## [0.1.0] - 2026-06-24
 
 The first complete, tested release: the agent loop with the approval gate, in both
