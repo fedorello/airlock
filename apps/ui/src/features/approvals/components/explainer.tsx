@@ -26,8 +26,10 @@ export function Explainer() {
           on their own, but anything{" "}
           <span className="text-sensitive font-medium">sensitive</span> &mdash;
           a refund, an email, a transfer &mdash; pauses here and cannot run
-          until you decide. The boundary is enforced by the architecture, not by
-          trusting the model.
+          until you decide. The safety lives in the{" "}
+          <strong>architecture</strong>, not in a system prompt the model could
+          be talked out of. We assume the agent can be hijacked &mdash; and put
+          the gate outside it, so it still can&rsquo;t act on its own.
         </p>
         <p className="text-muted-foreground flex flex-wrap gap-x-5 gap-y-1 pt-0.5">
           <span>
