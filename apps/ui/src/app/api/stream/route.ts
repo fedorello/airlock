@@ -13,30 +13,46 @@ export function GET(request: Request): Response {
   const encoder = new TextEncoder();
   let unsubscribe: Unsubscribe | null = null;
   let keepAlive: ReturnType<typeof setInterval> | null = null;
+  let closed = false;
+
+  // Idempotent teardown. Called from the stream's own cancel callback and from
+  // the request abort signal — never via stream.cancel(), which throws because
+  // the Response has locked the stream.
+  const cleanup = async (): Promise<void> => {
+    if (closed) {
+      return;
+    }
+    closed = true;
+    if (keepAlive !== null) {
+      clearInterval(keepAlive);
+    }
+    if (unsubscribe !== null) {
+      await unsubscribe();
+    }
+    logger.debug("sse client disconnected");
+  };
 
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
       unsubscribe = await eventSource.subscribe((event) => {
-        controller.enqueue(encoder.encode(formatSse(event)));
+        if (!closed) {
+          controller.enqueue(encoder.encode(formatSse(event)));
+        }
       });
       keepAlive = setInterval(() => {
-        controller.enqueue(encoder.encode(sseKeepAlive()));
+        if (!closed) {
+          controller.enqueue(encoder.encode(sseKeepAlive()));
+        }
       }, KEEP_ALIVE_MS);
       logger.debug("sse client connected");
     },
-    async cancel() {
-      if (keepAlive !== null) {
-        clearInterval(keepAlive);
-      }
-      if (unsubscribe !== null) {
-        await unsubscribe();
-      }
-      logger.debug("sse client disconnected");
+    cancel() {
+      void cleanup();
     },
   });
 
   request.signal.addEventListener("abort", () => {
-    void stream.cancel();
+    void cleanup();
   });
 
   return new Response(stream, {
