@@ -91,11 +91,22 @@ toy:
 In one line: **assume the model will be hijacked, and make the architecture — not
 the prompt — the thing that holds.**
 
+## Install
+
+```bash
+npm install @fedorello/airlock     # TypeScript / Node 24+
+pip install airlock-hitl           # Python 3.13+ (imports as `airlock`)
+```
+
+Per-package quickstarts and the full API live in the package READMEs:
+[TypeScript](./packages/ts/README.md) · [Python](./packages/py/README.md).
+
 ## Quickstart
 
-The packages live in [`packages/ts`](./packages/ts) and
-[`packages/py`](./packages/py). `make install` installs both; the snippets below
-import from `airlock` (the package name once published).
+The source lives in [`packages/ts`](./packages/ts) and
+[`packages/py`](./packages/py); `make install` sets both up for local
+development. The TypeScript package publishes as `@fedorello/airlock`; the Python
+package as `airlock-hitl`, imported as `airlock`.
 
 Gate a dangerous action in ~20 lines. The agent wants to send an email — the run
 **pauses** before it happens, and the email is sent only once you approve.
@@ -104,32 +115,57 @@ Gate a dangerous action in ~20 lines. The agent wants to send an email — the r
 
 ```ts
 import {
-  Agent, DecisionType, FakeLlmProvider, InMemoryAuditSink, InMemoryEventBus,
-  InMemoryRunStore, RiskBasedGatePolicy, RiskTier, SystemClock, UuidIdGenerator,
-} from "airlock";
+  Agent,
+  DecisionType,
+  FakeLlmProvider,
+  InMemoryAuditSink,
+  InMemoryEventBus,
+  InMemoryRunStore,
+  RiskBasedGatePolicy,
+  RiskTier,
+  SystemClock,
+  UuidIdGenerator,
+} from "@fedorello/airlock";
 
 const sendEmail = {
-  name: "send_email", description: "Send an email", parameters: { type: "object" },
+  name: "send_email",
+  description: "Send an email",
+  parameters: { type: "object" },
   risk: RiskTier.Sensitive, // sensitive: must be approved before it runs
-  handler: async (args) => { console.log("SENDING:", args); return "sent"; },
+  handler: async (args) => {
+    console.log("SENDING:", args);
+    return "sent";
+  },
 };
 
 // A scripted model — swap for AnthropicProvider / OpenAiProvider in production.
 const provider = new FakeLlmProvider([
-  { text: null, toolCalls: [{ id: "1", name: "send_email", args: { to: "alice@example.com" } }] },
+  {
+    text: null,
+    toolCalls: [
+      { id: "1", name: "send_email", args: { to: "alice@example.com" } },
+    ],
+  },
   { text: "Done.", toolCalls: [] },
 ]);
 
 const agent = new Agent({
-  provider, tools: [sendEmail], events: new InMemoryEventBus(), store: new InMemoryRunStore(),
-  audit: new InMemoryAuditSink(), clock: new SystemClock(), ids: new UuidIdGenerator(),
-  gatePolicy: new RiskBasedGatePolicy(), systemPrompt: "You are a support agent.",
+  provider,
+  tools: [sendEmail],
+  events: new InMemoryEventBus(),
+  store: new InMemoryRunStore(),
+  audit: new InMemoryAuditSink(),
+  clock: new SystemClock(),
+  ids: new UuidIdGenerator(),
+  gatePolicy: new RiskBasedGatePolicy(),
+  systemPrompt: "You are a support agent.",
 });
 
 const paused = await agent.run("Email Alice a refund confirmation");
 console.log(paused.status); // "awaiting_approval" — nothing sent yet
 const done = await agent.resume(paused.runId, paused.approval!.requestId, {
-  type: DecisionType.Approve, approver: "you@example.com",
+  type: DecisionType.Approve,
+  approver: "you@example.com",
 });
 console.log(done.status); // "completed" — now the email was sent
 ```

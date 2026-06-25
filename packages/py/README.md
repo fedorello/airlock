@@ -8,10 +8,16 @@ one-to-one (same design, same names).
 ## Install
 
 ```bash
-uv add airlock   # once published; for now, use it from this repo
+pip install airlock-hitl      # or: uv add airlock-hitl
 ```
 
-Requires Python 3.13+ and [uv](https://docs.astral.sh/uv/).
+The distribution is named `airlock-hitl`; the import is `airlock`:
+
+```python
+from airlock import Agent, RiskTier
+```
+
+Requires Python 3.13+.
 
 ## What you get
 

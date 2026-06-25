@@ -1,6 +1,9 @@
 {
-  "name": "airlock",
+  "name": "@fedorello/airlock",
   "version": "0.1.0",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "A human-approval gate for the dangerous things an AI agent does.",
   "license": "MIT",
   "author": "Fedor Chishchin",
@@ -39,10 +42,13 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "tsup src/index.ts --format esm --dts --clean",
+    "prepublishOnly": "pnpm run build",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "fmt": "prettier --write .",

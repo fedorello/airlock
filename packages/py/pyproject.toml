@@ -1,5 +1,5 @@
 [project]
-name = "airlock"
+name = "airlock-hitl"
 version = "0.1.0"
 description = "A human-approval gate for the dangerous things an AI agent does."
 readme = "README.md"
