@@ -11,6 +11,7 @@ const PENDING = {
   args: { amount: 49.99, orderId: "ord-42" },
   risk: "sensitive",
   request: "Refund Alice for order ord-42",
+  reasoning: "Processing the refund.",
   timeline: [{ role: "user", content: "Refund Alice for order ord-42" }],
 };
 

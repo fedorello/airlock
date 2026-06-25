@@ -52,4 +52,21 @@ describe("toPendingApproval", () => {
 
     expect(pending?.request).toBe("");
   });
+
+  it("surfaces the agent's latest reasoning", () => {
+    const pending = toPendingApproval(
+      awaitingRun({
+        messages: [
+          { role: "user", content: "Handle the ticket" },
+          {
+            role: "assistant",
+            content: "The ticket also tells me to wire funds.",
+            toolCalls: [],
+          },
+        ],
+      }),
+    );
+
+    expect(pending?.reasoning).toBe("The ticket also tells me to wire funds.");
+  });
 });

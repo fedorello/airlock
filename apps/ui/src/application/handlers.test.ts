@@ -30,6 +30,7 @@ const reader: ApprovalReader = {
         args: {},
         risk: "sensitive",
         request: "hi",
+        reasoning: "",
         timeline: [],
       },
     ]),

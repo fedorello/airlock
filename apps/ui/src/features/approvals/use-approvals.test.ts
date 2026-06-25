@@ -26,6 +26,7 @@ const PENDING: PendingApproval = {
   args: {},
   risk: "sensitive",
   request: "",
+  reasoning: "",
   timeline: [],
 };
 

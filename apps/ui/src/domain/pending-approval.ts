@@ -13,6 +13,7 @@ export interface PendingApproval {
   args: Record<string, unknown>;
   risk: RiskTier;
   request: string;
+  reasoning: string;
   timeline: Message[];
 }
 
@@ -29,6 +30,7 @@ export function toPendingApproval(state: RunState): PendingApproval | null {
     args: approval.toolCall.args,
     risk: approval.risk,
     request: firstUserMessage(state.messages),
+    reasoning: lastAgentReasoning(state.messages),
     timeline: state.messages,
   };
 }
@@ -36,4 +38,13 @@ export function toPendingApproval(state: RunState): PendingApproval | null {
 function firstUserMessage(messages: Message[]): string {
   const first = messages.find((message) => message.role === "user");
   return first?.content ?? "";
+}
+
+/** The model's stated reason for this action — the latest assistant message with
+ * text. For an injected agent this is where the manipulation shows. */
+function lastAgentReasoning(messages: Message[]): string {
+  const last = messages.findLast(
+    (message) => message.role === "assistant" && message.content !== "",
+  );
+  return last?.content ?? "";
 }

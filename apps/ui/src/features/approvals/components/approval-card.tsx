@@ -79,6 +79,15 @@ export function ApprovalCard({
         )}
       </div>
 
+      {approval.reasoning !== "" && (
+        <div className="border-sensitive/50 bg-sensitive-subtle/30 flex flex-col gap-1 rounded-md border-l-2 px-3 py-2">
+          <p className="text-muted-foreground text-xs">
+            The agent&rsquo;s reasoning
+          </p>
+          <p className="text-sm">{approval.reasoning}</p>
+        </div>
+      )}
+
       {mode === "editing" ? (
         <div className="flex flex-col gap-1">
           <label

@@ -13,6 +13,7 @@ const APPROVAL: PendingApproval = {
   args: { amount: 49.99 },
   risk: "sensitive",
   request: "Refund Alice",
+  reasoning: "The customer asked for a refund.",
   timeline: [{ role: "user", content: "Please refund order ord-42" }],
 };
 
@@ -39,6 +40,9 @@ describe("ApprovalCard", () => {
     expect(screen.getByText("Issue a refund")).toBeInTheDocument();
     expect(screen.getByText(/\$49\.99/)).toBeInTheDocument();
     expect(screen.getByText(/Refund Alice/)).toBeInTheDocument();
+    expect(
+      screen.getByText("The customer asked for a refund."),
+    ).toBeInTheDocument();
     expect(screen.getByText("issue_refund")).toBeInTheDocument();
     expect(screen.getByText(/Context/)).toBeInTheDocument();
   });

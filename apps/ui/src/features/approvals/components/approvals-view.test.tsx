@@ -12,6 +12,7 @@ const APPROVAL: PendingApproval = {
   args: {},
   risk: "sensitive",
   request: "",
+  reasoning: "",
   timeline: [],
 };
 

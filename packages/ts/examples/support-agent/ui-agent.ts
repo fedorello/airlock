@@ -16,11 +16,11 @@ import {
   UuidIdGenerator,
 } from "../../src/index";
 import {
-  SUPPORT_REQUEST,
-  SUPPORT_SCRIPT,
-  SUPPORT_SYSTEM_PROMPT,
-  createSupportTools,
-} from "./wiring";
+  INJECTION_REQUEST,
+  INJECTION_STEPS,
+  INJECTION_SYSTEM_PROMPT,
+  createInjectionTools,
+} from "./injection-scenario";
 
 // The agent behind the approver dashboard: it starts a support run that pauses at
 // the gate and waits for a human to approve through the UI (no auto-approver). It
@@ -34,8 +34,8 @@ const RESTART_DELAY_MS = 3000;
 class ScenarioProvider implements LlmProvider {
   complete(request: CompletionRequest): Promise<CompletionResult> {
     const done = request.messages.filter((message) => message.role === MessageRole.Tool).length;
-    const index = Math.min(done, SUPPORT_SCRIPT.length - 1);
-    const step = SUPPORT_SCRIPT[index] ?? { text: "Done.", toolCalls: [] };
+    const index = Math.min(done, INJECTION_STEPS.length - 1);
+    const step = INJECTION_STEPS[index] ?? { text: "Done.", toolCalls: [] };
     return Promise.resolve(step);
   }
 }
@@ -68,14 +68,14 @@ async function main(): Promise<void> {
   const bus = new RedisEventBus(publisher, subscriber);
   const agent = new Agent({
     provider: new ScenarioProvider(),
-    tools: createSupportTools(log),
+    tools: createInjectionTools(log),
     events: bus,
     store: new RedisRunStore(storeConnection),
     audit: new InMemoryAuditSink(),
     clock: new SystemClock(),
     ids: new UuidIdGenerator(),
     gatePolicy: new RiskBasedGatePolicy(),
-    systemPrompt: SUPPORT_SYSTEM_PROMPT,
+    systemPrompt: INJECTION_SYSTEM_PROMPT,
   });
 
   await new AgentRunner({ agent, subscriber: bus }).start();
@@ -87,7 +87,7 @@ async function main(): Promise<void> {
   log("[ui-agent] ready — open the dashboard and approve the actions it raises");
   for (;;) {
     current = deferred();
-    const started = await agent.run(SUPPORT_REQUEST);
+    const started = await agent.run(INJECTION_REQUEST);
     log(`[ui-agent] started run ${started.runId}; it is waiting for approval`);
     await current.promise;
     log("[ui-agent] run completed; starting another shortly");
