@@ -8,9 +8,11 @@ import { Button } from "@/shared/ui/button";
 import { Card } from "@/shared/ui/card";
 import { Textarea } from "@/shared/ui/textarea";
 
+import { assessActionRisk } from "../assess-risk";
 import { humanizeAction } from "../humanize";
 import { ArgsView } from "./args-view";
 import { RiskBadge } from "./risk-badge";
+import { RiskNotice } from "./risk-notice";
 import { Timeline } from "./timeline";
 
 type Mode = "idle" | "editing" | "rejecting";
@@ -60,6 +62,7 @@ export function ApprovalCard({
   };
 
   const { title, detail } = humanizeAction(approval.toolName, approval.args);
+  const riskFlags = assessActionRisk(approval.toolName, approval.args);
 
   return (
     <Card className="animate-in flex flex-col gap-4 p-5">
@@ -78,6 +81,8 @@ export function ApprovalCard({
           </p>
         )}
       </div>
+
+      <RiskNotice flags={riskFlags} />
 
       {approval.reasoning !== "" && (
         <div className="border-sensitive/50 bg-sensitive-subtle/30 flex flex-col gap-1 rounded-md border-l-2 px-3 py-2">

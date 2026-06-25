@@ -55,6 +55,25 @@ describe("ApprovalCard", () => {
     expect(onApprove).toHaveBeenCalledOnce();
   });
 
+  it("warns on a high-impact action", () => {
+    setup({
+      approval: {
+        ...APPROVAL,
+        toolName: "wire_transfer",
+        args: { to: "attacker@evil", amount: 5000 },
+      },
+    });
+
+    expect(screen.getByText(/review carefully/i)).toBeInTheDocument();
+    expect(screen.getByText("Sends to attacker@evil")).toBeInTheDocument();
+  });
+
+  it("does not warn on a low-impact action", () => {
+    setup();
+
+    expect(screen.queryByText(/review carefully/i)).not.toBeInTheDocument();
+  });
+
   it("edits the arguments and approves with the parsed object", async () => {
     const { onApproveWithEdits } = setup();
 

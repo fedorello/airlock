@@ -1,3 +1,5 @@
+import { firstNumber, firstString, formatMoney } from "./args";
+
 /** Turn a raw tool call into a short, human sentence for the operator, so the
  * card reads like "Issue a refund — $49.99 · order ord-42" instead of jargon. */
 
@@ -10,11 +12,6 @@ const ACTION_VERBS: Record<string, string> = {
   lookup_order: "Look up an order",
   search_knowledge_base: "Search the knowledge base",
 };
-
-const MONEY = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
-});
 
 export interface ActionSummary {
   title: string;
@@ -42,7 +39,7 @@ function describeArgs(args: Record<string, unknown>): string {
   const parts: string[] = [];
   const amount = firstNumber(args, ["amount", "value", "total"]);
   if (amount !== null) {
-    parts.push(MONEY.format(amount));
+    parts.push(formatMoney(amount));
   }
   const to = firstString(args, ["to", "recipient", "email"]);
   if (to !== null) {
@@ -57,30 +54,4 @@ function describeArgs(args: Record<string, unknown>): string {
     parts.push(`“${subject}”`);
   }
   return parts.join(" · ");
-}
-
-function firstString(
-  args: Record<string, unknown>,
-  keys: string[],
-): string | null {
-  for (const key of keys) {
-    const value = args[key];
-    if (typeof value === "string" && value !== "") {
-      return value;
-    }
-  }
-  return null;
-}
-
-function firstNumber(
-  args: Record<string, unknown>,
-  keys: string[],
-): number | null {
-  for (const key of keys) {
-    const value = args[key];
-    if (typeof value === "number") {
-      return value;
-    }
-  }
-  return null;
 }
