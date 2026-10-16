@@ -390,6 +390,10 @@ the open as a demonstration of the approach. See the
 rules in [`CLAUDE.md`](./CLAUDE.md), and the engineering standard it holds itself
 to in [`CODING_PRINCIPLES.md`](./CODING_PRINCIPLES.md).
 
+## Author
+
+Built by [Fedor Chishchin](https://fedorthinks.com), an AI engineer who builds AI agents and MCP servers. The story behind the project: [Airlock case study](https://fedorthinks.com/work/airlock).
+
 ## License
 
 MIT — see [`LICENSE`](./LICENSE).
